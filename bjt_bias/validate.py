@@ -1,6 +1,25 @@
 import math
 
 
+def _to_float(name, val):
+    """Parse a number, tolerating thousands separators and spaces.
+
+    Accepts values such as 1000000, 1,000,000, 1 000 000 or 2.2e3 so the
+    input fields can hold arbitrarily long numbers without being truncated.
+    """
+    if isinstance(val, bool):
+        raise ValueError(f"{name} must be a finite number")
+    if isinstance(val, str):
+        val = val.strip().replace(",", "").replace(" ", "")
+    try:
+        f = float(val)
+    except (TypeError, ValueError) as e:
+        raise ValueError(f"{name} must be a finite number") from e
+    if not math.isfinite(f):
+        raise ValueError(f"{name} must be a finite number")
+    return f
+
+
 def validate_inputs(vcc, r1, r2, rc, re, beta, vbe):
     values = {
         "VCC": vcc,
@@ -11,17 +30,7 @@ def validate_inputs(vcc, r1, r2, rc, re, beta, vbe):
         "beta": beta,
         "VBE": vbe,
     }
-    result = {}
-    for name, val in values.items():
-        if isinstance(val, bool):
-            raise ValueError(f"{name} must be a finite number")
-        try:
-            f = float(val)
-        except (TypeError, ValueError) as e:
-            raise ValueError(f"{name} must be a finite number") from e
-        if not math.isfinite(f):
-            raise ValueError(f"{name} must be a finite number")
-        result[name] = f
+    result = {name: _to_float(name, val) for name, val in values.items()}
 
     if result["VCC"] <= 0:
         raise ValueError("VCC must be greater than 0")

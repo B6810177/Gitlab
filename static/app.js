@@ -54,7 +54,8 @@
         var values = {};
 
         FIELDS.forEach(function (name) {
-            var text = raw[name];
+            // ยอมรับเครื่องหมาย comma/ช่องว่างเป็นตัวคั่นหลักพัน เช่น 1,000,000
+            var text = raw[name].replace(/,/g, "").replace(/\s+/g, "");
             if (text === "") {
                 errors.push(name + " is required");
                 return;

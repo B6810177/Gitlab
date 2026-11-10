@@ -21,6 +21,13 @@ class TestValidation(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate.validate_inputs(10, 1, 1, 1, 1, 100, 10)
 
+    def test_accepts_thousands_separators(self):
+        v = validate.validate_inputs(
+            "12", "100,000", "22,000", "2,200", "1,000", "100", "0.70"
+        )
+        self.assertEqual(v["R1"], 100000.0)
+        self.assertEqual(v["RE"], 1000.0)
+
 
 class TestBiasCalculation(unittest.TestCase):
     def test_known_example_agreement(self):
@@ -43,3 +50,11 @@ class TestBiasCalculation(unittest.TestCase):
         res = bias.calculate_bias(**v)
         self.assertTrue(any("saturation" in w.lower() for w in res["warnings"]))
         self.assertEqual(res["region"], "saturation")
+
+    def test_accepts_very_large_values(self):
+        v = validate.validate_inputs(
+            "1200", "10000000", "2200000", "220000", "100000", "100", "0.70"
+        )
+        res = bias.calculate_bias(**v)
+        self.assertEqual(res["region"], "active")
+        self.assertGreater(res["IC"], 0)

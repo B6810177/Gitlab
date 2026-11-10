@@ -50,6 +50,14 @@ class TestApp(unittest.TestCase):
         self.assertIn(b'8.052', r_kohm.data)
         self.assertIn(b'8.052', r_ohm.data)
 
+    def test_post_accepts_thousands_separators(self):
+        r = self.client.post('/', data={
+            'VCC': '12', 'R1': '100,000', 'R2': '22,000', 'RC': '2,200',
+            'RE': '1,000', 'beta': '100', 'VBE': '0.7', 'unit': 'ohm',
+        })
+        self.assertEqual(r.status_code, 200)
+        self.assertIn(b'8.052', r.data)
+
     def test_post_invalid(self):
         r = self.client.post('/', data={
             'VCC': '10', 'R1': '-1', 'R2': '5000', 'RC': '1000', 'RE': '500',

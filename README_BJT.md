@@ -15,8 +15,12 @@ The page is intentionally ordered **results first, input form last**:
    with a kΩ / Ω unit selector.
 
 On the first visit the results panel shows an empty state and all input fields
-start blank (placeholders only show example values). After submitting the form
-the page returns to the top so the new results are immediately visible.
+start blank. After submitting the form the page returns to the top so the new
+results are immediately visible.
+
+Number fields accept long values and thousands separators (for example
+`1,000,000` or `1000000`), and long result values wrap inside their cards instead
+of being cut off.
 
 ## Static (browser-only) version
 
