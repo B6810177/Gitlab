@@ -16,68 +16,12 @@
             <div class="tags">
                 <span>Forward-Active Approximation</span>
                 <span>Static · JavaScript</span>
-                <span>ผลลัพธ์อยู่ด้านบน</span>
+                <span>ผลลัพธ์อยู่ด้านล่าง</span>
             </div>
         </div>
     </header>
 
     <main class="wrap">
-        <!-- RESULTS : TOP -->
-        <section class="panel results-panel" id="results">
-            <div class="panel-head">
-                <div>
-                    <p class="kicker">ผลลัพธ์ · OUTPUT</p>
-                    <h2>DC Operating Point (Q-Point)</h2>
-                </div>
-                <a class="jump" href="#input">ไปที่แบบฟอร์มกรอกค่า ↓</a>
-            </div>
-
-            <div id="error-box" class="alert alert-error hidden" role="alert">
-                <strong>ไม่สามารถคำนวณได้ — ตรวจสอบข้อมูลที่กรอก</strong>
-                <ul id="error-list"></ul>
-            </div>
-
-            <div id="empty-state" class="empty">
-                <svg viewBox="0 0 64 64" aria-hidden="true">
-                    <rect x="8" y="10" width="48" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="2.5"/>
-                    <path d="M18 24h16M18 33h28M18 42h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                </svg>
-                <h3>ยังไม่มีผลลัพธ์</h3>
-                <p>กรอกค่า V<sub>CC</sub>, R1, R2, R<sub>C</sub>, R<sub>E</sub>, β และ V<sub>BE</sub> ในแบบฟอร์มด้านล่าง แล้วกด <strong>Calculate DC Bias</strong></p>
-                <a class="btn primary" href="#input">ไปที่แบบฟอร์มด้านล่าง ↓</a>
-            </div>
-
-            <div id="result-box" class="hidden">
-                <div id="region-banner" class="region region-active">
-                    <span class="region-dot"></span>
-                    <div>
-                        <strong id="region-name">Forward Active</strong>
-                        <p id="region-desc"></p>
-                    </div>
-                </div>
-
-                <div class="metrics">
-                    <div class="metric"><span class="metric-label">V<sub>B</sub></span><span class="metric-value" id="out-VB">—</span><span class="metric-unit">V</span></div>
-                    <div class="metric"><span class="metric-label">V<sub>E</sub></span><span class="metric-value" id="out-VE">—</span><span class="metric-unit">V</span></div>
-                    <div class="metric"><span class="metric-label">V<sub>C</sub></span><span class="metric-value" id="out-VC">—</span><span class="metric-unit">V</span></div>
-                    <div class="metric metric-key"><span class="metric-label">V<sub>CE</sub></span><span class="metric-value" id="out-VCE">—</span><span class="metric-unit">V</span></div>
-                    <div class="metric metric-key"><span class="metric-label">I<sub>C</sub></span><span class="metric-value" id="out-IC">—</span><span class="metric-unit">mA</span></div>
-                </div>
-
-                <div class="metrics metrics-small">
-                    <div class="metric"><span class="metric-label">I<sub>B</sub></span><span class="metric-value" id="out-IB">—</span><span class="metric-unit">µA</span></div>
-                    <div class="metric"><span class="metric-label">I<sub>E</sub></span><span class="metric-value" id="out-IE">—</span><span class="metric-unit">mA</span></div>
-                    <div class="metric"><span class="metric-label">V<sub>TH</sub></span><span class="metric-value" id="out-VTH">—</span><span class="metric-unit">V</span></div>
-                    <div class="metric"><span class="metric-label">R<sub>TH</sub></span><span class="metric-value" id="out-RTH">—</span><span class="metric-unit">Ω</span></div>
-                </div>
-
-                <div id="warning-box" class="alert alert-warn hidden">
-                    <strong>คำเตือนจากแบบจำลอง</strong>
-                    <ul id="warning-list"></ul>
-                </div>
-            </div>
-        </section>
-
         <!-- CIRCUIT -->
         <section class="panel">
             <div class="panel-head">
@@ -142,14 +86,14 @@
             </div>
         </section>
 
-        <!-- INPUT FORM : BOTTOM -->
+        <!-- INPUT FORM : MIDDLE -->
         <section class="panel form-panel" id="input">
             <div class="panel-head">
                 <div>
                     <p class="kicker">ข้อมูลเข้า · INPUT</p>
                     <h2>กรอกค่าพารามิเตอร์</h2>
                 </div>
-                <a class="jump" href="#results">↑ กลับไปดูผลลัพธ์</a>
+                <a class="jump" href="#results">↓ ไปดูผลลัพธ์</a>
             </div>
 
             <form id="bias-form" method="get" action="#" novalidate>
@@ -194,6 +138,62 @@
                 </div>
             </form>
         </section>
+        <!-- RESULTS : BOTTOM -->
+        <section class="panel results-panel" id="results">
+            <div class="panel-head">
+                <div>
+                    <p class="kicker">ผลลัพธ์ · OUTPUT</p>
+                    <h2>DC Operating Point (Q-Point)</h2>
+                </div>
+                <a class="jump" href="#input">↑ ไปที่แบบฟอร์มกรอกค่า</a>
+            </div>
+
+            <div id="error-box" class="alert alert-error hidden" role="alert">
+                <strong>ไม่สามารถคำนวณได้ — ตรวจสอบข้อมูลที่กรอก</strong>
+                <ul id="error-list"></ul>
+            </div>
+
+            <div id="empty-state" class="empty">
+                <svg viewBox="0 0 64 64" aria-hidden="true">
+                    <rect x="8" y="10" width="48" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M18 24h16M18 33h28M18 42h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+                <h3>ยังไม่มีผลลัพธ์</h3>
+                <p>กรอกค่า V<sub>CC</sub>, R1, R2, R<sub>C</sub>, R<sub>E</sub>, β และ V<sub>BE</sub> ในแบบฟอร์มด้านบน แล้วกด <strong>Calculate DC Bias</strong></p>
+                <a class="btn primary" href="#input">ไปที่แบบฟอร์มด้านบน ↑</a>
+            </div>
+
+            <div id="result-box" class="hidden">
+                <div id="region-banner" class="region region-active">
+                    <span class="region-dot"></span>
+                    <div>
+                        <strong id="region-name">Forward Active</strong>
+                        <p id="region-desc"></p>
+                    </div>
+                </div>
+
+                <div class="metrics">
+                    <div class="metric"><span class="metric-label">V<sub>B</sub></span><span class="metric-value" id="out-VB">—</span><span class="metric-unit">V</span></div>
+                    <div class="metric"><span class="metric-label">V<sub>E</sub></span><span class="metric-value" id="out-VE">—</span><span class="metric-unit">V</span></div>
+                    <div class="metric"><span class="metric-label">V<sub>C</sub></span><span class="metric-value" id="out-VC">—</span><span class="metric-unit">V</span></div>
+                    <div class="metric metric-key"><span class="metric-label">V<sub>CE</sub></span><span class="metric-value" id="out-VCE">—</span><span class="metric-unit">V</span></div>
+                    <div class="metric metric-key"><span class="metric-label">I<sub>C</sub></span><span class="metric-value" id="out-IC">—</span><span class="metric-unit">mA</span></div>
+                </div>
+
+                <div class="metrics metrics-small">
+                    <div class="metric"><span class="metric-label">I<sub>B</sub></span><span class="metric-value" id="out-IB">—</span><span class="metric-unit">µA</span></div>
+                    <div class="metric"><span class="metric-label">I<sub>E</sub></span><span class="metric-value" id="out-IE">—</span><span class="metric-unit">mA</span></div>
+                    <div class="metric"><span class="metric-label">V<sub>TH</sub></span><span class="metric-value" id="out-VTH">—</span><span class="metric-unit">V</span></div>
+                    <div class="metric"><span class="metric-label">R<sub>TH</sub></span><span class="metric-value" id="out-RTH">—</span><span class="metric-unit">Ω</span></div>
+                </div>
+
+                <div id="warning-box" class="alert alert-warn hidden">
+                    <strong>คำเตือนจากแบบจำลอง</strong>
+                    <ul id="warning-list"></ul>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="site-footer">

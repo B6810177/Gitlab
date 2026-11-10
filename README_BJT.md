@@ -5,18 +5,17 @@ common-emitter stage (ENG29 2121 · Lab 02).
 
 ## UI layout
 
-The page is intentionally ordered **results first, input form last**:
+The page is intentionally ordered **circuit first, input form in the middle, results last**:
 
-1. **DC Operating Point** — region banner, V<sub>B</sub>, V<sub>E</sub>,
-   V<sub>C</sub>, V<sub>CE</sub>, I<sub>C</sub>, secondary values, warnings and
-   the independent-calculation check.
-2. **Circuit diagram** — voltage-divider bias reference schematic.
-3. **Input form** — V<sub>CC</sub>, β, V<sub>BE</sub> and R1/R2/R<sub>C</sub>/R<sub>E</sub>
+1. **Circuit diagram** — voltage-divider bias reference schematic.
+2. **Input form** — V<sub>CC</sub>, β, V<sub>BE</sub> and R1/R2/R<sub>C</sub>/R<sub>E</sub>
    with a kΩ / Ω unit selector.
+3. **DC Operating Point** — region banner, V<sub>B</sub>, V<sub>E</sub>,
+   V<sub>C</sub>, V<sub>CE</sub>, I<sub>C</sub>, secondary values and warnings.
 
 On the first visit the results panel shows an empty state and all input fields
-start blank. After submitting the form the page returns to the top so the new
-results are immediately visible.
+start blank. After submitting the form the page scrolls down to the results so
+the new values are immediately visible.
 
 Number fields accept long values and thousands separators (for example
 `1,000,000` or `1000000`), and long result values wrap inside their cards instead
@@ -38,7 +37,7 @@ bjt_bias/
   bias.py           engineering calculations + region detection
 templates/
   base.html         page shell
-  index.html        results (top) + schematic + input form (bottom)
+  index.html        schematic (top) + input form + results (bottom)
 static/
   style.css         responsive layout
 tests/
@@ -107,6 +106,6 @@ flask --app app run --debug
 python -m unittest discover -s tests -v
 ```
 
-12 tests cover validation, the reference calculation, cutoff/saturation
+16 tests cover validation, the reference calculation, cutoff/saturation
 warnings, region detection, unit conversion (kΩ vs Ω), the HTTP form flow and
-the results-above-form layout order.
+the circuit → form → results layout order.

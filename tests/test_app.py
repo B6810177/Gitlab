@@ -30,10 +30,12 @@ class TestApp(unittest.TestCase):
         self.assertIn(b'alert-error', r.data)
         self.assertIn(b'must be a finite number', r.data)
 
-    def test_results_are_above_input_form(self):
+    def test_layout_order_circuit_form_results(self):
         r = self.client.get('/')
         html = r.data.decode('utf-8')
-        self.assertLess(html.index('id="results"'), html.index('id="input"'))
+        # วงจรอยู่บนสุด ตามด้วยฟอร์มป้อนข้อมูล และผลลัพธ์อยู่ล่างสุด
+        self.assertLess(html.index('Voltage-Divider Bias'), html.index('id="input"'))
+        self.assertLess(html.index('id="input"'), html.index('id="results"'))
 
     def test_post_valid(self):
         r = self.client.post('/', data=VALID_OHM)

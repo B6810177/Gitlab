@@ -124,6 +124,13 @@
         };
     }
 
+    function scrollToResults() {
+        var panel = document.getElementById("results");
+        if (panel) {
+            panel.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }
+
     function showErrors(errors) {
         els.errorList.innerHTML = "";
         errors.forEach(function (message) {
@@ -134,7 +141,7 @@
         els.errorBox.classList.remove("hidden");
         els.result.classList.add("hidden");
         els.empty.classList.add("hidden");
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        scrollToResults();
     }
 
     function setRegion(region) {
@@ -187,7 +194,7 @@
             els.warningBox.classList.add("hidden");
         }
 
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        scrollToResults();
     }
 
     form.addEventListener("submit", function (event) {
