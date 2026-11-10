@@ -15,7 +15,7 @@ class TestApp(unittest.TestCase):
             'VCC': '10', 'R1': '10000', 'R2': '5000', 'RC': '1000', 'RE': '500', 'beta': '100', 'VBE': '0.7'
         })
         self.assertEqual(r.status_code, 200)
-        self.assertIn(b'IC', r.data)
+        self.assertIn(b'I_C', r.data)
 
     def test_post_invalid(self):
         r = self.client.post('/', data={
