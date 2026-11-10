@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="post">
+    <div class="grid">
+        <label>VCC (V) <input name="VCC" value="{{ values.get('VCC','') }}" required></label>
+        <label>R1 (Ω) <input name="R1" value="{{ values.get('R1','') }}" required></label>
+        <label>R2 (Ω) <input name="R2" value="{{ values.get('R2','') }}" required></label>
+        <label>RC (Ω) <input name="RC" value="{{ values.get('RC','') }}" required></label>
+        <label>RE (Ω) <input name="RE" value="{{ values.get('RE','') }}" required></label>
+        <label>beta <input name="beta" value="{{ values.get('beta','') }}" required></label>
+        <label>VBE (V) <input name="VBE" value="{{ values.get('VBE','') }}" required></label>
+    </div>
+    <button type="submit">Calculate</button>
+</form>
+
+{% if errors %}
+<div class="errors">
+    {% for e in errors %}<p>{{ e }}</p>{% endfor %}
+</div>
+{% endif %}
+
+{% if result %}
+<h2>DC Operating Point</h2>
+<table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>I_B</td><td>{{ '%.6g'|format(result.IB) }} A</td></tr>
+    <tr><td>I_C</td><td>{{ '%.6g'|format(result.IC) }} A</td></tr>
+    <tr><td>I_E</td><td>{{ '%.6g'|format(result.IE) }} A</td></tr>
+    <tr><td>V_B</td><td>{{ '%.6g'|format(result.VB) }} V</td></tr>
+    <tr><td>V_E</td><td>{{ '%.6g'|format(result.VE) }} V</td></tr>
+    <tr><td>V_C</td><td>{{ '%.6g'|format(result.VC) }} V</td></tr>
+    <tr><td>V_CE</td><td>{{ '%.6g'|format(result.VCE) }} V</td></tr>
+    <tr><td>V_TH</td><td>{{ '%.6g'|format(result.VTH) }} V</td></tr>
+    <tr><td>R_TH</td><td>{{ '%.6g'|format(result.RTH) }} Ω</td></tr>
+</table>
+
+<h2>Verification (Independent Calculation)</h2>
+<table>
+    <tr><th>Method</th><th>I_C (A)</th></tr>
+    <tr><td>Calc A (Thevenin base-loop)</td><td>{{ '%.9g'|format(result.calc_a.IC) }}</td></tr>
+    <tr><td>Calc B (Nodal/KCL)</td><td>{{ '%.9g'|format(result.calc_b.IC) }}</td></tr>
+    <tr><td>|ΔI_C|</td><td>{{ '%.9g'|format(result.verification.delta_ic) }}</td></tr>
+    <tr><td>Agreement</td><td>{{ 'PASS' if result.verification.agree else 'FAIL' }}</td></tr>
+</table>
+
+{% if result.warnings %}
+<h2>Region Warnings</h2>
+<div class="warnings">
+    {% for w in result.warnings %}<p>{{ w }}</p>{% endfor %}
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}
