@@ -181,39 +181,6 @@ main { padding-top: 26px; padding-bottom: 40px; }
 .alert-error { background: #fdebf0; border-color: var(--red); color: #a01e44; }
 .alert-warn { background: #fff5e6; border-color: var(--orange); color: #8a4a1c; }
 
-/* ---------- Verification ---------- */
-.verify {
-    margin-top: 18px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: #fdfbff;
-    overflow: hidden;
-}
-.verify summary {
-    cursor: pointer;
-    padding: 12px 16px;
-    font-size: 13.5px;
-    font-weight: 700;
-    color: var(--blue);
-}
-.verify summary:hover { background: #f5edff; }
-.verify .table-scroll { padding: 0 16px 16px; overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; font-size: 14px; }
-th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: left; }
-th { background: #f1e8fd; color: #4b2472; font-size: 12.5px; }
-.ok { color: var(--green); }
-.bad { color: var(--red); }
-
-.used {
-    margin: 16px 0 0;
-    padding-top: 14px;
-    border-top: 1px dashed var(--line);
-    font-size: 12.5px;
-    color: var(--muted);
-    line-height: 1.8;
-    overflow-wrap: anywhere;
-}
-
 /* ---------- Empty state ---------- */
 .empty {
     text-align: center;

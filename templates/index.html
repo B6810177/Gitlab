@@ -106,37 +106,6 @@
             </ul>
         </div>
         {% endif %}
-
-        <details class="verify">
-            <summary>ตรวจสอบด้วยการคำนวณอิสระ (Calc A: Thevenin vs Calc B: Nodal/KCL)</summary>
-            <div class="table-scroll">
-                <table>
-                    <thead>
-                        <tr><th>Method</th><th>I<sub>C</sub> (A)</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Calc A · Thevenin base-loop</td><td>{{ '%.9g'|format(result.calc_a.IC) }}</td></tr>
-                        <tr><td>Calc B · Nodal / KCL</td><td>{{ '%.9g'|format(result.calc_b.IC) }}</td></tr>
-                        <tr><td>|ΔI<sub>C</sub>|</td><td>{{ '%.3e'|format(result.verification.delta_ic) }}</td></tr>
-                        <tr>
-                            <td>Agreement</td>
-                            <td><strong class="{{ 'ok' if result.verification.agree else 'bad' }}">{{ 'PASS' if result.verification.agree else 'FAIL' }}</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </details>
-
-        <p class="used">
-            <strong>ค่าที่ใช้คำนวณ:</strong>
-            V<sub>CC</sub> = {{ values.get('VCC') }} V ·
-            R1 = {{ values.get('R1') }} {{ 'kΩ' if unit == 'kohm' else 'Ω' }} ·
-            R2 = {{ values.get('R2') }} {{ 'kΩ' if unit == 'kohm' else 'Ω' }} ·
-            R<sub>C</sub> = {{ values.get('RC') }} {{ 'kΩ' if unit == 'kohm' else 'Ω' }} ·
-            R<sub>E</sub> = {{ values.get('RE') }} {{ 'kΩ' if unit == 'kohm' else 'Ω' }} ·
-            β = {{ values.get('beta') }} ·
-            V<sub>BE</sub> = {{ values.get('VBE') }} V
-        </p>
     {% else %}
         <div class="empty">
             <svg viewBox="0 0 64 64" aria-hidden="true">

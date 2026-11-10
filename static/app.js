@@ -17,11 +17,6 @@
         regionDesc: document.getElementById("region-desc"),
         warningBox: document.getElementById("warning-box"),
         warningList: document.getElementById("warning-list"),
-        verifyA: document.getElementById("verify-a"),
-        verifyB: document.getElementById("verify-b"),
-        verifyDelta: document.getElementById("verify-delta"),
-        verifyAgree: document.getElementById("verify-agree"),
-        used: document.getElementById("used-values"),
         out: {
             VB: document.getElementById("out-VB"),
             VE: document.getElementById("out-VE"),
@@ -109,16 +104,6 @@
         var VC = VCC - IC * RC;
         var VCE = VC - VE;
 
-        // Calc B: independent nodal/KCL
-        var IE_over_IC = (beta + 1) / beta;
-        var left = (VCC - VBE) / R1 - VBE / R2;
-        var rightCoeff = 1 / beta + RE * IE_over_IC * (1 / R1 + 1 / R2);
-        var ICb = rightCoeff === 0 ? NaN : left / rightCoeff;
-
-        var delta = Math.abs(IC - ICb);
-        var tol = 1e-9 * Math.max(1, Math.abs(IC), Math.abs(ICb));
-        var agree = delta <= Math.max(tol, 1e-12);
-
         var warnings = [];
         var region;
         if (IB <= 0 || IC <= 0) {
@@ -135,7 +120,6 @@
             VTH: VTH, RTH: RTH,
             IB: IB, IC: IC, IE: IE,
             VB: VB, VE: VE, VC: VC, VCE: VCE,
-            ICb: ICb, delta: delta, agree: agree,
             warnings: warnings, region: region
         };
     }
@@ -174,7 +158,7 @@
         els.regionDesc.textContent = text.desc;
     }
 
-    function render(r, raw) {
+    function render(r) {
         els.errorBox.classList.add("hidden");
         els.empty.classList.add("hidden");
         els.result.classList.remove("hidden");
@@ -203,23 +187,6 @@
             els.warningBox.classList.add("hidden");
         }
 
-        els.verifyA.textContent = Number(r.IC.toPrecision(9)).toString();
-        els.verifyB.textContent = Number(r.ICb.toPrecision(9)).toString();
-        els.verifyDelta.textContent = r.delta.toExponential(3);
-        els.verifyAgree.textContent = r.agree ? "PASS" : "FAIL";
-        els.verifyAgree.className = r.agree ? "ok" : "bad";
-
-        var unitLabel = raw.unit === "kohm" ? "kΩ" : "Ω";
-        els.used.innerHTML =
-            "<strong>ค่าที่ใช้คำนวณ:</strong> " +
-            "V<sub>CC</sub> = " + raw.VCC + " V · " +
-            "R1 = " + raw.R1 + " " + unitLabel + " · " +
-            "R2 = " + raw.R2 + " " + unitLabel + " · " +
-            "R<sub>C</sub> = " + raw.RC + " " + unitLabel + " · " +
-            "R<sub>E</sub> = " + raw.RE + " " + unitLabel + " · " +
-            "β = " + raw.beta + " · " +
-            "V<sub>BE</sub> = " + raw.VBE + " V";
-
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -233,7 +200,7 @@
             return;
         }
 
-        render(calculate(parsed.values, raw.unit), raw);
+        render(calculate(parsed.values, raw.unit));
     });
 
     form.addEventListener("reset", function () {
