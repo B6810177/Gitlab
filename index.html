@@ -175,15 +175,15 @@
                     <div class="form-grid">
                         <label>
                             <span>V<sub>CC</sub> <em>(V)</em></span>
-                            <input name="VCC" type="number" step="any" min="0" value="12" placeholder="12" required>
+                            <input name="VCC" type="number" step="any" min="0" value="" placeholder="12" required>
                         </label>
                         <label>
                             <span>β (h<sub>FE</sub>)</span>
-                            <input name="beta" type="number" step="any" min="0" value="100" placeholder="100" required>
+                            <input name="beta" type="number" step="any" min="0" value="" placeholder="100" required>
                         </label>
                         <label>
                             <span>V<sub>BE</sub> <em>(V)</em></span>
-                            <input name="VBE" type="number" step="any" min="0" value="0.70" placeholder="0.70" required>
+                            <input name="VBE" type="number" step="any" min="0" value="" placeholder="0.70" required>
                         </label>
                     </div>
                 </fieldset>
@@ -197,17 +197,17 @@
                         </select>
                     </legend>
                     <div class="form-grid form-grid-4">
-                        <label><span>R1</span><input name="R1" type="number" step="any" min="0" value="100" placeholder="100" required></label>
-                        <label><span>R2</span><input name="R2" type="number" step="any" min="0" value="22" placeholder="22" required></label>
-                        <label><span>R<sub>C</sub></span><input name="RC" type="number" step="any" min="0" value="2.2" placeholder="2.2" required></label>
-                        <label><span>R<sub>E</sub></span><input name="RE" type="number" step="any" min="0" value="1" placeholder="1" required></label>
+                        <label><span>R1</span><input name="R1" type="number" step="any" min="0" value="" placeholder="100" required></label>
+                        <label><span>R2</span><input name="R2" type="number" step="any" min="0" value="" placeholder="22" required></label>
+                        <label><span>R<sub>C</sub></span><input name="RC" type="number" step="any" min="0" value="" placeholder="2.2" required></label>
+                        <label><span>R<sub>E</sub></span><input name="RE" type="number" step="any" min="0" value="" placeholder="1" required></label>
                     </div>
                 </fieldset>
 
                 <div class="form-actions">
                     <button type="submit" class="btn primary">Calculate DC Bias</button>
                     <button type="reset" class="btn ghost">Reset</button>
-                    <p class="hint">ค่าตั้งต้น: V<sub>CC</sub> 12 V · R1 100 kΩ · R2 22 kΩ · R<sub>C</sub> 2.2 kΩ · R<sub>E</sub> 1 kΩ · β 100 · V<sub>BE</sub> 0.70 V</p>
+                    <p class="hint">ตัวอย่างค่า (สำหรับทดลอง): V<sub>CC</sub> 12 V · R1 100 kΩ · R2 22 kΩ · R<sub>C</sub> 2.2 kΩ · R<sub>E</sub> 1 kΩ · β 100 · V<sub>BE</sub> 0.70 V</p>
                 </div>
             </form>
         </section>

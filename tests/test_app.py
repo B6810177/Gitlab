@@ -20,6 +20,15 @@ class TestApp(unittest.TestCase):
         r = self.client.get('/')
         self.assertEqual(r.status_code, 200)
         self.assertIn(b'name="VCC"', r.data)
+        # ค่าที่กรอกต้องเริ่มจากช่องว่าง ไม่ pre-fill ตัวเลข
+        self.assertNotIn(b'value="12"', r.data)
+        self.assertNotIn(b'value="100"', r.data)
+
+    def test_post_empty_shows_error(self):
+        r = self.client.post('/', data={'unit': 'kohm'})
+        self.assertEqual(r.status_code, 200)
+        self.assertIn(b'alert-error', r.data)
+        self.assertIn(b'must be a finite number', r.data)
 
     def test_results_are_above_input_form(self):
         r = self.client.get('/')

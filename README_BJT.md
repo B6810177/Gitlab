@@ -14,8 +14,9 @@ The page is intentionally ordered **results first, input form last**:
 3. **Input form** — V<sub>CC</sub>, β, V<sub>BE</sub> and R1/R2/R<sub>C</sub>/R<sub>E</sub>
    with a kΩ / Ω unit selector.
 
-On the first visit the results panel shows an empty state; after submitting the
-form the browser reloads at the top so the new results are immediately visible.
+On the first visit the results panel shows an empty state and all input fields
+start blank (placeholders only show example values). After submitting the form
+the page returns to the top so the new results are immediately visible.
 
 ## Static (browser-only) version
 
