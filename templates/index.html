@@ -1,65 +1,69 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="problem">
-    <h2>Problem Statement</h2>
-    <p>Calculate the DC operating point (Q-point) of a voltage-divider biased BJT Common-Emitter amplifier. Given VCC, R1, R2, RC, RE, β, and VBE, find I<sub>B</sub>, I<sub>C</sub>, I<sub>E</sub>, V<sub>B</sub>, V<sub>E</sub>, V<sub>C</sub>, V<sub>CE</sub>.</p>
-</section>
+<div class="card">
+    <section class="problem">
+        <h2>Problem Statement</h2>
+        <p>Calculate the DC operating point (Q-point) of a voltage-divider biased BJT Common-Emitter amplifier. Given VCC, R1, R2, RC, RE, β, and VBE, find I<sub>B</sub>, I<sub>C</sub>, I<sub>E</sub>, V<sub>B</sub>, V<sub>E</sub>, V<sub>C</sub>, V<sub>CE</sub>.</p>
+    </section>
+</div>
 
-<section class="circuit">
-    <h2>Circuit Diagram</h2>
-    <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
-        <!-- VCC -->
-        <line x1="200" y1="20" x2="200" y2="40" stroke="black" stroke-width="2"/>
-        <text x="210" y="30" font-size="12">VCC</text>
-        <!-- RC -->
-        <line x1="200" y1="40" x2="200" y2="70" stroke="black" stroke-width="2"/>
-        <rect x="195" y="70" width="10" height="30" fill="none" stroke="black"/>
-        <text x="215" y="88" font-size="11">RC</text>
-        <!-- Collector to node -->
-        <line x1="200" y1="100" x2="200" y2="130" stroke="black" stroke-width="2"/>
-        <circle cx="200" cy="140" r="10" fill="none" stroke="black"/>
-        <text x="220" y="145" font-size="11">V_C</text>
-        <!-- Transistor base -->
-        <line x1="190" y1="140" x2="150" y2="140" stroke="black" stroke-width="2"/>
-        <!-- R1 to VCC -->
-        <line x1="150" y1="140" x2="150" y2="70" stroke="black" stroke-width="2"/>
-        <rect x="145" y="40" width="10" height="30" fill="none" stroke="black"/>
-        <text x="125" y="58" font-size="11">R1</text>
-        <line x1="150" y1="40" x2="150" y2="20" stroke="black" stroke-width="2"/>
-        <line x1="150" y1="20" x2="200" y2="20" stroke="black" stroke-width="2"/>
-        <!-- R2 to ground -->
-        <line x1="150" y1="140" x2="150" y2="180" stroke="black" stroke-width="2"/>
-        <rect x="145" y="180" width="10" height="30" fill="none" stroke="black"/>
-        <text x="125" y="198" font-size="11">R2</text>
-        <line x1="150" y1="210" x2="150" y2="230" stroke="black" stroke-width="2"/>
-        <line x1="140" y1="230" x2="160" y2="230" stroke="black" stroke-width="2"/>
-        <line x1="143" y1="233" x2="157" y2="233" stroke="black" stroke-width="2"/>
-        <line x1="146" y1="236" x2="154" y2="236" stroke="black" stroke-width="2"/>
-        <!-- Emitter -->
-        <line x1="200" y1="150" x2="200" y2="180" stroke="black" stroke-width="2"/>
-        <rect x="195" y="180" width="10" height="30" fill="none" stroke="black"/>
-        <text x="215" y="198" font-size="11">RE</text>
-        <line x1="200" y1="210" x2="200" y2="230" stroke="black" stroke-width="2"/>
-        <line x1="190" y1="230" x2="210" y2="230" stroke="black" stroke-width="2"/>
-        <line x1="193" y1="233" x2="207" y2="233" stroke="black" stroke-width="2"/>
-        <line x1="196" y1="236" x2="204" y2="236" stroke="black" stroke-width="2"/>
-        <text x="220" y="185" font-size="11">V_E</text>
-    </svg>
-</section>
-
-<h2>Input Parameters</h2>
-<form method="post">
-    <div class="grid">
-        <label>VCC (V) <input name="VCC" value="{{ values.get('VCC','') }}" required></label>
-        <label>R1 (Ω) <input name="R1" value="{{ values.get('R1','') }}" required></label>
-        <label>R2 (Ω) <input name="R2" value="{{ values.get('R2','') }}" required></label>
-        <label>RC (Ω) <input name="RC" value="{{ values.get('RC','') }}" required></label>
-        <label>RE (Ω) <input name="RE" value="{{ values.get('RE','') }}" required></label>
-        <label>β <input name="beta" value="{{ values.get('beta','') }}" required></label>
-        <label>VBE (V) <input name="VBE" value="{{ values.get('VBE','') }}" required></label>
+<div class="row">
+    <div class="card half">
+        <section class="circuit">
+            <h2>Circuit Diagram</h2>
+            <div class="svg-wrap">
+                <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="200" y1="20" x2="200" y2="40" stroke="#333" stroke-width="2"/>
+                    <text x="210" y="30" font-size="12">VCC</text>
+                    <line x1="200" y1="40" x2="200" y2="70" stroke="#333" stroke-width="2"/>
+                    <rect x="195" y="70" width="10" height="30" fill="none" stroke="#333"/>
+                    <text x="215" y="88" font-size="11">R<sub>C</sub></text>
+                    <line x1="200" y1="100" x2="200" y2="130" stroke="#333" stroke-width="2"/>
+                    <circle cx="200" cy="140" r="10" fill="none" stroke="#333"/>
+                    <text x="220" y="145" font-size="11">V<sub>C</sub></text>
+                    <line x1="190" y1="140" x2="150" y2="140" stroke="#333" stroke-width="2"/>
+                    <line x1="150" y1="140" x2="150" y2="70" stroke="#333" stroke-width="2"/>
+                    <rect x="145" y="40" width="10" height="30" fill="none" stroke="#333"/>
+                    <text x="125" y="58" font-size="11">R<sub>1</sub></text>
+                    <line x1="150" y1="40" x2="150" y2="20" stroke="#333" stroke-width="2"/>
+                    <line x1="150" y1="20" x2="200" y2="20" stroke="#333" stroke-width="2"/>
+                    <line x1="150" y1="140" x2="150" y2="180" stroke="#333" stroke-width="2"/>
+                    <rect x="145" y="180" width="10" height="30" fill="none" stroke="#333"/>
+                    <text x="125" y="198" font-size="11">R<sub>2</sub></text>
+                    <line x1="150" y1="210" x2="150" y2="230" stroke="#333" stroke-width="2"/>
+                    <line x1="140" y1="230" x2="160" y2="230" stroke="#333" stroke-width="2"/>
+                    <line x1="143" y1="233" x2="157" y2="233" stroke="#333" stroke-width="2"/>
+                    <line x1="146" y1="236" x2="154" y2="236" stroke="#333" stroke-width="2"/>
+                    <line x1="200" y1="150" x2="200" y2="180" stroke="#333" stroke-width="2"/>
+                    <rect x="195" y="180" width="10" height="30" fill="none" stroke="#333"/>
+                    <text x="215" y="198" font-size="11">R<sub>E</sub></text>
+                    <line x1="200" y1="210" x2="200" y2="230" stroke="#333" stroke-width="2"/>
+                    <line x1="190" y1="230" x2="210" y2="230" stroke="#333" stroke-width="2"/>
+                    <line x1="193" y1="233" x2="207" y2="233" stroke="#333" stroke-width="2"/>
+                    <line x1="196" y1="236" x2="204" y2="236" stroke="#333" stroke-width="2"/>
+                    <text x="220" y="185" font-size="11">V<sub>E</sub></text>
+                </svg>
+            </div>
+        </section>
     </div>
-    <button type="submit">Calculate</button>
-</form>
+    <div class="card half">
+        <section class="inputs">
+            <h2>Input Parameters</h2>
+            <form method="post">
+                <div class="grid">
+                    <label>VCC (V) <input name="VCC" value="{{ values.get('VCC','') }}" placeholder="e.g. 10" required></label>
+                    <label>R1 (Ω) <input name="R1" value="{{ values.get('R1','') }}" placeholder="e.g. 10000" required></label>
+                    <label>R2 (Ω) <input name="R2" value="{{ values.get('R2','') }}" placeholder="e.g. 5000" required></label>
+                    <label>RC (Ω) <input name="RC" value="{{ values.get('RC','') }}" placeholder="e.g. 1000" required></label>
+                    <label>RE (Ω) <input name="RE" value="{{ values.get('RE','') }}" placeholder="e.g. 500" required></label>
+                    <label>β <input name="beta" value="{{ values.get('beta','') }}" placeholder="e.g. 100" required></label>
+                    <label>VBE (V) <input name="VBE" value="{{ values.get('VBE','') }}" placeholder="e.g. 0.7" required></label>
+                </div>
+                <button type="submit" class="btn">Calculate</button>
+            </form>
+        </section>
+    </div>
+</div>
 
 {% if errors %}
 <div class="errors">
@@ -68,33 +72,40 @@
 {% endif %}
 
 {% if result %}
-<h2>DC Operating Point</h2>
-<table>
-    <tr><th>Parameter</th><th>Value</th></tr>
-    <tr><td>I_B</td><td>{{ '%.6g'|format(result.IB) }} A</td></tr>
-    <tr><td>I_C</td><td>{{ '%.6g'|format(result.IC) }} A</td></tr>
-    <tr><td>I_E</td><td>{{ '%.6g'|format(result.IE) }} A</td></tr>
-    <tr><td>V_B</td><td>{{ '%.6g'|format(result.VB) }} V</td></tr>
-    <tr><td>V_E</td><td>{{ '%.6g'|format(result.VE) }} V</td></tr>
-    <tr><td>V_C</td><td>{{ '%.6g'|format(result.VC) }} V</td></tr>
-    <tr><td>V_CE</td><td>{{ '%.6g'|format(result.VCE) }} V</td></tr>
-    <tr><td>V_TH</td><td>{{ '%.6g'|format(result.VTH) }} V</td></tr>
-    <tr><td>R_TH</td><td>{{ '%.6g'|format(result.RTH) }} Ω</td></tr>
-</table>
-
-<h2>Verification (Independent Calculation)</h2>
-<table>
-    <tr><th>Method</th><th>I_C (A)</th></tr>
-    <tr><td>Calc A (Thevenin base-loop)</td><td>{{ '%.9g'|format(result.calc_a.IC) }}</td></tr>
-    <tr><td>Calc B (Nodal/KCL)</td><td>{{ '%.9g'|format(result.calc_b.IC) }}</td></tr>
-    <tr><td>|ΔI_C|</td><td>{{ '%.9g'|format(result.verification.delta_ic) }}</td></tr>
-    <tr><td>Agreement</td><td>{{ 'PASS' if result.verification.agree else 'FAIL' }}</td></tr>
-</table>
+<div class="row">
+    <div class="card half">
+        <h2>DC Operating Point (Q-Point)</h2>
+        <table>
+            <tr><th>Parameter</th><th>Value</th></tr>
+            <tr><td>I<sub>B</sub></td><td>{{ '%.6g'|format(result.IB) }} A</td></tr>
+            <tr><td>I<sub>C</sub></td><td>{{ '%.6g'|format(result.IC) }} A</td></tr>
+            <tr><td>I<sub>E</sub></td><td>{{ '%.6g'|format(result.IE) }} A</td></tr>
+            <tr><td>V<sub>B</sub></td><td>{{ '%.6g'|format(result.VB) }} V</td></tr>
+            <tr><td>V<sub>E</sub></td><td>{{ '%.6g'|format(result.VE) }} V</td></tr>
+            <tr><td>V<sub>C</sub></td><td>{{ '%.6g'|format(result.VC) }} V</td></tr>
+            <tr><td>V<sub>CE</sub></td><td>{{ '%.6g'|format(result.VCE) }} V</td></tr>
+            <tr><td>V<sub>TH</sub></td><td>{{ '%.6g'|format(result.VTH) }} V</td></tr>
+            <tr><td>R<sub>TH</sub></td><td>{{ '%.6g'|format(result.RTH) }} Ω</td></tr>
+        </table>
+    </div>
+    <div class="card half">
+        <h2>Verification (Independent Calculation)</h2>
+        <table>
+            <tr><th>Method</th><th>I<sub>C</sub> (A)</th></tr>
+            <tr><td>Calc A (Thevenin base-loop)</td><td>{{ '%.9g'|format(result.calc_a.IC) }}</td></tr>
+            <tr><td>Calc B (Nodal/KCL)</td><td>{{ '%.9g'|format(result.calc_b.IC) }}</td></tr>
+            <tr><td>|ΔI<sub>C</sub>|</td><td>{{ '%.9g'|format(result.verification.delta_ic) }}</td></tr>
+            <tr><td>Agreement</td><td><strong>{{ 'PASS' if result.verification.agree else 'FAIL' }}</strong></td></tr>
+        </table>
+    </div>
+</div>
 
 {% if result.warnings %}
-<h2>Region Warnings</h2>
-<div class="warnings">
-    {% for w in result.warnings %}<p>{{ w }}</p>{% endfor %}
+<div class="card">
+    <h2>Region Warnings</h2>
+    <div class="warnings">
+        {% for w in result.warnings %}<p>⚠️ {{ w }}</p>{% endfor %}
+    </div>
 </div>
 {% endif %}
 {% endif %}

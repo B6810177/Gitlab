@@ -1,11 +1,23 @@
-body { font-family: Arial, sans-serif; margin: 20px; background: #f7f7f7; }
-.container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-label { display: flex; flex-direction: column; }
-input { padding: 6px; }
-button { margin-top: 10px; padding: 8px 16px; }
-table { border-collapse: collapse; width: 100%; margin-top: 10px; }
-th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-th { background: #f0f0f0; }
-.errors { color: #d33; background: #fee; padding: 10px; border-radius: 4px; }
-.warnings { color: #b60; background: #fff3cd; padding: 10px; border-radius: 4px; }
+* { box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; padding: 20px; }
+.container { max-width: 1100px; margin: 0 auto; }
+h1 { text-align: center; color: #2c3e50; margin-bottom: 30px; font-size: 28px; }
+h2 { color: #2c3e50; margin-top: 0; font-size: 20px; border-bottom: 2px solid #3498db; padding-bottom: 8px; }
+.card { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 25px; margin-bottom: 25px; }
+.row { display: flex; gap: 25px; flex-wrap: wrap; }
+.half { flex: 1; min-width: 300px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+label { display: flex; flex-direction: column; font-weight: 600; color: #34495e; font-size: 14px; }
+input { padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+input:focus { outline: none; border-color: #3498db; }
+.btn { margin-top: 20px; padding: 12px 30px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 600; }
+.btn:hover { background: #2980b9; }
+.svg-wrap { text-align: center; background: #f9f9f9; padding: 15px; border-radius: 5px; }
+svg { max-width: 100%; height: auto; }
+table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+th, td { border: 1px solid #e0e0e0; padding: 12px; text-align: left; }
+th { background: #3498db; color: white; font-weight: 600; }
+tr:nth-child(even) { background: #f9f9f9; }
+.errors { color: #e74c3c; background: #fdf2f2; padding: 15px; border-radius: 5px; border-left: 4px solid #e74c3c; margin-bottom: 20px; }
+.warnings { color: #f39c12; background: #fef9e7; padding: 15px; border-radius: 5px; border-left: 4px solid #f39c12; }
+.problem p { color: #555; line-height: 1.6; }
