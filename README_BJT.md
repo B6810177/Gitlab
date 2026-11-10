@@ -17,6 +17,13 @@ The page is intentionally ordered **results first, input form last**:
 On the first visit the results panel shows an empty state; after submitting the
 form the browser reloads at the top so the new results are immediately visible.
 
+## Static (browser-only) version
+
+`index.html` + `static/app.js` implement the same UI and the same equations in
+JavaScript, so the calculator can be used by opening `index.html` directly or
+through GitHub Pages — no Python server required. The Flask version remains the
+Lab 02 deliverable and the reference implementation covered by the tests.
+
 ## Project structure
 
 ```
