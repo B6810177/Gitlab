@@ -1,5 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
+<section class="problem">
+    <h2>Problem Statement</h2>
+    <p>Calculate the DC operating point (Q-point) of a voltage-divider biased BJT Common-Emitter amplifier. Given VCC, R1, R2, RC, RE, β, and VBE, find I<sub>B</sub>, I<sub>C</sub>, I<sub>E</sub>, V<sub>B</sub>, V<sub>E</sub>, V<sub>C</sub>, V<sub>CE</sub>.</p>
+</section>
+
+<section class="circuit">
+    <h2>Circuit Diagram</h2>
+    <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+        <!-- VCC -->
+        <line x1="200" y1="20" x2="200" y2="40" stroke="black" stroke-width="2"/>
+        <text x="210" y="30" font-size="12">VCC</text>
+        <!-- RC -->
+        <line x1="200" y1="40" x2="200" y2="70" stroke="black" stroke-width="2"/>
+        <rect x="195" y="70" width="10" height="30" fill="none" stroke="black"/>
+        <text x="215" y="88" font-size="11">RC</text>
+        <!-- Collector to node -->
+        <line x1="200" y1="100" x2="200" y2="130" stroke="black" stroke-width="2"/>
+        <circle cx="200" cy="140" r="10" fill="none" stroke="black"/>
+        <text x="220" y="145" font-size="11">V_C</text>
+        <!-- Transistor base -->
+        <line x1="190" y1="140" x2="150" y2="140" stroke="black" stroke-width="2"/>
+        <!-- R1 to VCC -->
+        <line x1="150" y1="140" x2="150" y2="70" stroke="black" stroke-width="2"/>
+        <rect x="145" y="40" width="10" height="30" fill="none" stroke="black"/>
+        <text x="125" y="58" font-size="11">R1</text>
+        <line x1="150" y1="40" x2="150" y2="20" stroke="black" stroke-width="2"/>
+        <line x1="150" y1="20" x2="200" y2="20" stroke="black" stroke-width="2"/>
+        <!-- R2 to ground -->
+        <line x1="150" y1="140" x2="150" y2="180" stroke="black" stroke-width="2"/>
+        <rect x="145" y="180" width="10" height="30" fill="none" stroke="black"/>
+        <text x="125" y="198" font-size="11">R2</text>
+        <line x1="150" y1="210" x2="150" y2="230" stroke="black" stroke-width="2"/>
+        <line x1="140" y1="230" x2="160" y2="230" stroke="black" stroke-width="2"/>
+        <line x1="143" y1="233" x2="157" y2="233" stroke="black" stroke-width="2"/>
+        <line x1="146" y1="236" x2="154" y2="236" stroke="black" stroke-width="2"/>
+        <!-- Emitter -->
+        <line x1="200" y1="150" x2="200" y2="180" stroke="black" stroke-width="2"/>
+        <rect x="195" y="180" width="10" height="30" fill="none" stroke="black"/>
+        <text x="215" y="198" font-size="11">RE</text>
+        <line x1="200" y1="210" x2="200" y2="230" stroke="black" stroke-width="2"/>
+        <line x1="190" y1="230" x2="210" y2="230" stroke="black" stroke-width="2"/>
+        <line x1="193" y1="233" x2="207" y2="233" stroke="black" stroke-width="2"/>
+        <line x1="196" y1="236" x2="204" y2="236" stroke="black" stroke-width="2"/>
+        <text x="220" y="185" font-size="11">V_E</text>
+    </svg>
+</section>
+
+<h2>Input Parameters</h2>
 <form method="post">
     <div class="grid">
         <label>VCC (V) <input name="VCC" value="{{ values.get('VCC','') }}" required></label>
@@ -7,7 +55,7 @@
         <label>R2 (Ω) <input name="R2" value="{{ values.get('R2','') }}" required></label>
         <label>RC (Ω) <input name="RC" value="{{ values.get('RC','') }}" required></label>
         <label>RE (Ω) <input name="RE" value="{{ values.get('RE','') }}" required></label>
-        <label>beta <input name="beta" value="{{ values.get('beta','') }}" required></label>
+        <label>β <input name="beta" value="{{ values.get('beta','') }}" required></label>
         <label>VBE (V) <input name="VBE" value="{{ values.get('VBE','') }}" required></label>
     </div>
     <button type="submit">Calculate</button>
