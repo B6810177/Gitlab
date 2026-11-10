@@ -12,36 +12,62 @@
         <section class="circuit">
             <h2>Circuit Diagram</h2>
             <div class="svg-wrap">
-                <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="200" y1="20" x2="200" y2="40" stroke="#333" stroke-width="2"/>
-                    <text x="210" y="30" font-size="12">VCC</text>
-                    <line x1="200" y1="40" x2="200" y2="70" stroke="#333" stroke-width="2"/>
-                    <rect x="195" y="70" width="10" height="30" fill="none" stroke="#333"/>
-                    <text x="215" y="88" font-size="11">R<sub>C</sub></text>
-                    <line x1="200" y1="100" x2="200" y2="130" stroke="#333" stroke-width="2"/>
-                    <circle cx="200" cy="140" r="10" fill="none" stroke="#333"/>
-                    <text x="220" y="145" font-size="11">V<sub>C</sub></text>
-                    <line x1="190" y1="140" x2="150" y2="140" stroke="#333" stroke-width="2"/>
-                    <line x1="150" y1="140" x2="150" y2="70" stroke="#333" stroke-width="2"/>
-                    <rect x="145" y="40" width="10" height="30" fill="none" stroke="#333"/>
-                    <text x="125" y="58" font-size="11">R<sub>1</sub></text>
-                    <line x1="150" y1="40" x2="150" y2="20" stroke="#333" stroke-width="2"/>
-                    <line x1="150" y1="20" x2="200" y2="20" stroke="#333" stroke-width="2"/>
-                    <line x1="150" y1="140" x2="150" y2="180" stroke="#333" stroke-width="2"/>
-                    <rect x="145" y="180" width="10" height="30" fill="none" stroke="#333"/>
-                    <text x="125" y="198" font-size="11">R<sub>2</sub></text>
-                    <line x1="150" y1="210" x2="150" y2="230" stroke="#333" stroke-width="2"/>
-                    <line x1="140" y1="230" x2="160" y2="230" stroke="#333" stroke-width="2"/>
-                    <line x1="143" y1="233" x2="157" y2="233" stroke="#333" stroke-width="2"/>
-                    <line x1="146" y1="236" x2="154" y2="236" stroke="#333" stroke-width="2"/>
-                    <line x1="200" y1="150" x2="200" y2="180" stroke="#333" stroke-width="2"/>
-                    <rect x="195" y="180" width="10" height="30" fill="none" stroke="#333"/>
-                    <text x="215" y="198" font-size="11">R<sub>E</sub></text>
-                    <line x1="200" y1="210" x2="200" y2="230" stroke="#333" stroke-width="2"/>
-                    <line x1="190" y1="230" x2="210" y2="230" stroke="#333" stroke-width="2"/>
-                    <line x1="193" y1="233" x2="207" y2="233" stroke="#333" stroke-width="2"/>
-                    <line x1="196" y1="236" x2="204" y2="236" stroke="#333" stroke-width="2"/>
-                    <text x="220" y="185" font-size="11">V<sub>E</sub></text>
+                <svg viewBox="0 0 450 320" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#667eea" />
+                        </marker>
+                    </defs>
+                    <!-- Background grid effect -->
+                    <g opacity="0.1">
+                        <line x1="0" y1="40" x2="450" y2="40" stroke="#667eea" stroke-width="1"/>
+                        <line x1="0" y1="80" x2="450" y2="80" stroke="#667eea" stroke-width="1"/>
+                        <line x1="0" y1="120" x2="450" y2="120" stroke="#667eea" stroke-width="1"/>
+                        <line x1="0" y1="160" x2="450" y2="160" stroke="#667eea" stroke-width="1"/>
+                        <line x1="0" y1="200" x2="450" y2="200" stroke="#667eea" stroke-width="1"/>
+                        <line x1="0" y1="240" x2="450" y2="240" stroke="#667eea" stroke-width="1"/>
+                        <line x1="0" y1="280" x2="450" y2="280" stroke="#667eea" stroke-width="1"/>
+                    </g>
+                    <!-- VCC -->
+                    <line x1="225" y1="30" x2="225" y2="55" stroke="#e53e3e" stroke-width="3" marker-end="url(#arrow)"/>
+                    <text x="235" y="35" font-size="13" font-weight="bold" fill="#e53e3e">VCC</text>
+                    <!-- RC -->
+                    <line x1="225" y1="55" x2="225" y2="90" stroke="#2d3748" stroke-width="2.5"/>
+                    <rect x="218" y="90" width="14" height="35" rx="2" fill="none" stroke="#2d3748" stroke-width="2.5"/>
+                    <text x="245" y="110" font-size="13" font-weight="600">R<sub>C</sub></text>
+                    <!-- Collector node -->
+                    <line x1="225" y1="125" x2="225" y2="155" stroke="#2d3748" stroke-width="2.5"/>
+                    <circle cx="225" cy="165" r="12" fill="none" stroke="#2d3748" stroke-width="2.5"/>
+                    <line x1="213" y1="165" x2="195" y2="165" stroke="#2d3748" stroke-width="2.5"/>
+                    <text x="250" y="170" font-size="12" font-weight="600">V<sub>C</sub></text>
+                    <!-- Base line -->
+                    <line x1="195" y1="165" x2="165" y2="165" stroke="#2d3748" stroke-width="2.5"/>
+                    <!-- R1 -->
+                    <line x1="165" y1="165" x2="165" y2="95" stroke="#2d3748" stroke-width="2.5"/>
+                    <rect x="158" y="60" width="14" height="35" rx="2" fill="none" stroke="#2d3748" stroke-width="2.5"/>
+                    <text x="135" y="80" font-size="13" font-weight="600">R<sub>1</sub></text>
+                    <line x1="165" y1="60" x2="165" y2="55" stroke="#2d3748" stroke-width="2.5"/>
+                    <line x1="165" y1="55" x2="225" y2="55" stroke="#2d3748" stroke-width="2.5"/>
+                    <!-- R2 -->
+                    <line x1="165" y1="165" x2="165" y2="210" stroke="#2d3748" stroke-width="2.5"/>
+                    <rect x="158" y="210" width="14" height="35" rx="2" fill="none" stroke="#2d3748" stroke-width="2.5"/>
+                    <text x="135" y="230" font-size="13" font-weight="600">R<sub>2</sub></text>
+                    <line x1="165" y1="245" x2="165" y2="265" stroke="#2d3748" stroke-width="2.5"/>
+                    <line x1="155" y1="265" x2="175" y2="265" stroke="#2d3748" stroke-width="2.5"/>
+                    <line x1="158" y1="268" x2="172" y2="268" stroke="#2d3748" stroke-width="2.5"/>
+                    <line x1="161" y1="271" x2="169" y2="271" stroke="#2d3748" stroke-width="2.5"/>
+                    <!-- Emitter -->
+                    <line x1="225" y1="177" x2="225" y2="210" stroke="#2d3748" stroke-width="2.5"/>
+                    <rect x="218" y="210" width="14" height="35" rx="2" fill="none" stroke="#2d3748" stroke-width="2.5"/>
+                    <text x="245" y="230" font-size="13" font-weight="600">R<sub>E</sub></text>
+                    <line x1="225" y1="245" x2="225" y2="265" stroke="#2d3748" stroke-width="2.5"/>
+                    <line x1="215" y1="265" x2="235" y2="265" stroke="#2d3748" stroke-width="2.5"/>
+                    <line x1="218" y1="268" x2="232" y2="268" stroke="#2d3748" stroke-width="2.5"/>
+                    <line x1="221" y1="271" x2="229" y2="271" stroke="#2d3748" stroke-width="2.5"/>
+                    <text x="245" y="215" font-size="12" font-weight="600">V<sub>E</sub></text>
+                    <!-- Transistor symbol -->
+                    <line x1="213" y1="155" x2="213" y2="175" stroke="#2d3748" stroke-width="2.5"/>
+                    <polygon points="213,160 225,165 213,170" fill="#2d3748"/>
                 </svg>
             </div>
         </section>
