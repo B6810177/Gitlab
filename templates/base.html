@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BJT CE DC Bias Calculator | ENG29 2121</title>
+    <meta name="description" content="BJT Common-Emitter Voltage-Divider DC Bias Calculator for ENG29 2121 Lab 02">
+    <title>BJT DC Bias Calculator | ENG29 2121</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>BJT Common-Emitter Voltage-Divider Bias Calculator</h1>
-        <p style="text-align: center; color: #7f8c8d; margin-top: -20px; margin-bottom: 30px;">ENG29 2121 - DC Operating Point Analysis</p>
+    <header class="hero">
+        <div class="wrap">
+            <p class="eyebrow">ENG29 2121 · LAB 02 · DC BIAS WEB APP</p>
+            <h1>BJT DC Bias Calculator</h1>
+            <p class="subtitle">วงจรขยาย Common-Emitter แบบ Voltage-Divider Bias · วิเคราะห์ DC Operating Point</p>
+            <div class="tags">
+                <span>Forward-Active Approximation</span>
+                <span>Python + Flask</span>
+                <span>ผลลัพธ์อยู่ด้านบน</span>
+            </div>
+        </div>
+    </header>
+    <main class="wrap">
         {% block content %}{% endblock %}
-    </div>
+    </main>
+    <footer class="site-footer">
+        ENG29 2121 · Computer Programming for Electrical Engineers · 2/2569
+    </footer>
 </body>
 </html>

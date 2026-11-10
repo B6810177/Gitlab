@@ -39,11 +39,17 @@ def calculate_bias(VCC, R1, R2, RC, RE, beta, VBE):
     warnings = []
     if IB_a <= 0 or IC_a <= 0:
         warnings.append("Transistor likely in cutoff")
-    VCE_sat = 0.2
-    if VCE_a <= VCE_sat + 1e-9:
-        warnings.append("Transistor likely in saturation (V_CE near/at saturation)")
+        region = "cutoff"
+    else:
+        VCE_sat = 0.2
+        if VCE_a <= VCE_sat + 1e-9:
+            warnings.append("Transistor likely in saturation (V_CE near/at saturation)")
+            region = "saturation"
+        else:
+            region = "active"
 
     return {
+        "region": region,
         "IC": IC_a,
         "IB": IB_a,
         "IE": IE_a,

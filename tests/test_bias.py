@@ -30,13 +30,16 @@ class TestBiasCalculation(unittest.TestCase):
         self.assertTrue(res["verification"]["agree"])
         self.assertIn("IC", res)
         self.assertIn("VCE", res)
+        self.assertEqual(res["region"], "active")
 
     def test_cutoff_warning(self):
         v = validate.validate_inputs(1, 10000, 10000, 1000, 1000, 100, 0.9)
         res = bias.calculate_bias(**v)
         self.assertTrue(any("cutoff" in w.lower() for w in res["warnings"]))
+        self.assertEqual(res["region"], "cutoff")
 
     def test_saturation_warning(self):
         v = validate.validate_inputs(5, 1000, 10000, 100, 50, 100, 0.7)
         res = bias.calculate_bias(**v)
         self.assertTrue(any("saturation" in w.lower() for w in res["warnings"]))
+        self.assertEqual(res["region"], "saturation")
