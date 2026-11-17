@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
-{# ---------- CIRCUIT (แสดงเฉพาะโหมด Divider) ---------- #}
-{% if mode == 'divider' %}
+{# ---------- CIRCUIT ---------- #}
 <section class="panel">
     <div class="panel-head">
         <div>
             <p class="kicker">วงจรอ้างอิง · SCHEMATIC</p>
-            <h2>Voltage-Divider Bias · Common Emitter</h2>
+            <h2>{% if mode == 'divider' %}Voltage-Divider Bias · Common Emitter{% elif mode == 'fixed' %}Fixed Bias · Common Emitter{% else %}Emitter Bias · Common Emitter{% endif %}</h2>
         </div>
     </div>
     <div class="svg-wrap">
+        {% if mode == 'divider' %}
         <svg viewBox="0 0 560 390" role="img" aria-labelledby="c-title c-desc" xmlns="http://www.w3.org/2000/svg">
             <title id="c-title">Voltage-divider biased NPN common-emitter circuit</title>
             <desc id="c-desc">R1 from VCC to base, R2 from base to ground, RC from VCC to collector, RE from emitter to ground, NPN transistor with base, collector and emitter labelled.</desc>
@@ -30,7 +30,7 @@
                 <rect x="331" y="86" width="18" height="48" rx="2" fill="#ffffff"/>
                 <path d="M340 134 V164"/>
                 <!-- Base lead -->
-                <path d="M270 196 H300"/>
+                <path d="M270 196 H312"/>
                 <!-- Transistor body -->
                 <path d="M312 168 V224"/>
                 <path d="M312 182 L340 164"/>
@@ -77,9 +77,126 @@
                 <text x="48" y="232" font-size="13" fill="#6f5f86">Emitter</text>
             </g>
         </svg>
+        {% elif mode == 'fixed' %}
+        <svg viewBox="0 0 560 390" role="img" aria-labelledby="f-title f-desc" xmlns="http://www.w3.org/2000/svg">
+            <title id="f-title">Fixed bias NPN common-emitter circuit</title>
+            <desc id="f-desc">RB from VCC to base, RC from VCC to collector, emitter connected directly to ground, NPN transistor with base, collector and emitter labelled.</desc>
+            <g fill="none" stroke="#3b1e5e" stroke-width="2.4" stroke-linecap="round">
+                <!-- VCC rail -->
+                <path d="M210 46 H340"/>
+                <path d="M210 46 V86"/>
+                <path d="M340 46 V86"/>
+                <!-- RB -->
+                <rect x="201" y="86" width="18" height="48" rx="2" fill="#ffffff"/>
+                <path d="M210 134 V196"/>
+                <!-- RC -->
+                <rect x="331" y="86" width="18" height="48" rx="2" fill="#ffffff"/>
+                <path d="M340 134 V164"/>
+                <!-- Base lead -->
+                <path d="M210 196 H312"/>
+                <!-- Transistor body -->
+                <path d="M312 168 V224"/>
+                <path d="M312 182 L340 164"/>
+                <path d="M312 210 L340 228"/>
+                <!-- Emitter arrow -->
+                <path d="M334 224 L340 228 L333 232" stroke="#db2777" stroke-width="2.4"/>
+                <!-- Emitter to ground (no RE) -->
+                <path d="M340 228 V320"/>
+            </g>
+
+            <!-- Ground -->
+            <g stroke="#3b1e5e" stroke-width="2.4" stroke-linecap="round">
+                <path d="M328 320 H352"/>
+                <path d="M332 326 H348"/>
+                <path d="M336 332 H344"/>
+            </g>
+
+            <!-- Nodes -->
+            <g fill="#3b1e5e">
+                <circle cx="210" cy="196" r="3.4"/>
+                <circle cx="340" cy="164" r="3.4"/>
+                <circle cx="340" cy="228" r="3.4"/>
+                <circle cx="340" cy="46" r="3.4"/>
+                <circle cx="210" cy="46" r="3.4"/>
+            </g>
+
+            <!-- Labels -->
+            <g font-family="Tahoma, 'Noto Sans Thai', Arial, sans-serif" fill="#3b1e5e">
+                <text x="352" y="40" font-size="15" font-weight="700">+V<tspan font-size="11" dy="3">CC</tspan></text>
+                <text x="188" y="114" font-size="14" font-weight="700" text-anchor="end">R<tspan font-size="10" dy="2">B</tspan></text>
+                <text x="360" y="114" font-size="14" font-weight="700">R<tspan font-size="10" dy="2">C</tspan></text>
+                <text x="224" y="188" font-size="13" fill="#db2777" font-weight="700">V<tspan font-size="10" dy="2">B</tspan></text>
+                <text x="352" y="158" font-size="13" fill="#db2777" font-weight="700">V<tspan font-size="10" dy="2">C</tspan></text>
+                <text x="352" y="252" font-size="13" fill="#db2777" font-weight="700">V<tspan font-size="10" dy="2">E</tspan> = 0</text>
+                <text x="48" y="196" font-size="13" fill="#6f5f86">Fixed Bias</text>
+                <text x="48" y="214" font-size="13" fill="#6f5f86">Emitter</text>
+                <text x="48" y="232" font-size="13" fill="#6f5f86">grounded</text>
+            </g>
+        </svg>
+        {% else %}
+        <svg viewBox="0 0 560 390" role="img" aria-labelledby="e-title e-desc" xmlns="http://www.w3.org/2000/svg">
+            <title id="e-title">Emitter bias NPN common-emitter circuit</title>
+            <desc id="e-desc">RB from VCC to base, RC from VCC to collector, RE from emitter to ground, NPN transistor with base, collector and emitter labelled.</desc>
+            <g fill="none" stroke="#3b1e5e" stroke-width="2.4" stroke-linecap="round">
+                <!-- VCC rail -->
+                <path d="M210 46 H340"/>
+                <path d="M210 46 V86"/>
+                <path d="M340 46 V86"/>
+                <!-- RB -->
+                <rect x="201" y="86" width="18" height="48" rx="2" fill="#ffffff"/>
+                <path d="M210 134 V196"/>
+                <!-- RC -->
+                <rect x="331" y="86" width="18" height="48" rx="2" fill="#ffffff"/>
+                <path d="M340 134 V164"/>
+                <!-- Base lead -->
+                <path d="M210 196 H312"/>
+                <!-- Transistor body -->
+                <path d="M312 168 V224"/>
+                <path d="M312 182 L340 164"/>
+                <path d="M312 210 L340 228"/>
+                <!-- Emitter arrow -->
+                <path d="M334 224 L340 228 L333 232" stroke="#db2777" stroke-width="2.4"/>
+                <!-- Emitter to RE -->
+                <path d="M340 228 V252"/>
+                <rect x="331" y="252" width="18" height="48" rx="2" fill="#ffffff"/>
+                <path d="M340 300 V326"/>
+            </g>
+
+            <!-- Ground -->
+            <g stroke="#3b1e5e" stroke-width="2.4" stroke-linecap="round">
+                <path d="M328 326 H352"/>
+                <path d="M332 332 H348"/>
+                <path d="M336 338 H344"/>
+            </g>
+
+            <!-- Nodes -->
+            <g fill="#3b1e5e">
+                <circle cx="210" cy="196" r="3.4"/>
+                <circle cx="340" cy="164" r="3.4"/>
+                <circle cx="340" cy="228" r="3.4"/>
+                <circle cx="340" cy="46" r="3.4"/>
+                <circle cx="210" cy="46" r="3.4"/>
+            </g>
+
+            <!-- Labels -->
+            <g font-family="Tahoma, 'Noto Sans Thai', Arial, sans-serif" fill="#3b1e5e">
+                <text x="352" y="40" font-size="15" font-weight="700">+V<tspan font-size="11" dy="3">CC</tspan></text>
+                <text x="188" y="114" font-size="14" font-weight="700" text-anchor="end">R<tspan font-size="10" dy="2">B</tspan></text>
+                <text x="360" y="114" font-size="14" font-weight="700">R<tspan font-size="10" dy="2">C</tspan></text>
+                <text x="360" y="280" font-size="14" font-weight="700">R<tspan font-size="10" dy="2">E</tspan></text>
+                <text x="224" y="188" font-size="13" fill="#db2777" font-weight="700">V<tspan font-size="10" dy="2">B</tspan></text>
+                <text x="352" y="158" font-size="13" fill="#db2777" font-weight="700">V<tspan font-size="10" dy="2">C</tspan></text>
+                <text x="352" y="248" font-size="13" fill="#db2777" font-weight="700">V<tspan font-size="10" dy="2">E</tspan></text>
+                <text x="48" y="196" font-size="13" fill="#6f5f86">Emitter Bias</text>
+                <text x="48" y="214" font-size="13" fill="#6f5f86">R</text>
+                <text x="60" y="218" font-size="10" fill="#6f5f86">E</text>
+                <text x="68" y="214" font-size="13" fill="#6f5f86">stabilises</text>
+                <text x="48" y="232" font-size="13" fill="#6f5f86">Q-point</text>
+            </g>
+        </svg>
+        {% endif %}
     </div>
 </section>
-{% endif %}
 
 {# ---------- INPUT FORM : MIDDLE OF PAGE ---------- #}
 <section class="panel form-panel" id="input">
