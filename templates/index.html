@@ -467,4 +467,67 @@
     </p>
 </section>
 
+{# ---------- VALIDATION : A1-A5 ---------- #}
+<section class="panel validation-panel" id="validation">
+    <div class="panel-head">
+        <div>
+            <p class="kicker">04 · VALIDATION A1–A5</p>
+            <h2>ผลตรวจรับด้วย Browser · A1–A5</h2>
+        </div>
+        <span class="validation-date">ตรวจเมื่อ {{ validation_date }}</span>
+    </div>
+
+    <p class="model-lead">
+        ค่าอ้างอิงคำนวณแยกจากโปรแกรมด้วยสมการในตำรา Engineering Electronics
+        (ไม่ได้มาจากโค้ดที่กำลังตรวจ) — {{ validation_shared }}
+    </p>
+
+    <div class="table-wrap">
+        <table class="validation-table">
+            <caption class="visually-hidden">ตารางผลตรวจรับ A1–A5: อินพุต ค่าคาดหมาย ผลจริง วิธีตรวจ และสถานะ</caption>
+            <thead>
+                <tr>
+                    <th scope="col">กรณี</th>
+                    <th scope="col">โหมด / ค่าที่กรอก</th>
+                    <th scope="col">คาดหมาย (อ้างอิง)</th>
+                    <th scope="col">เห็นจริง</th>
+                    <th scope="col">ผลต่าง</th>
+                    <th scope="col">วิธีตรวจ</th>
+                    <th scope="col">สถานะ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in validation_cases %}
+                <tr class="case-row">
+                    <th scope="row" class="case-cell">
+                        <span class="case-id">{{ row.case_id }}</span>
+                        <span class="case-title">{{ row.title }}</span>
+                    </th>
+                    <td>
+                        <span class="mode-tag">{{ row.mode }}</span>
+                        <span class="case-inputs">{{ row.inputs }}</span>
+                    </td>
+                    <td class="num">{{ row.expected }}</td>
+                    <td class="num">{{ row.observed }}</td>
+                    <td class="num">{{ row.delta or "—" }}</td>
+                    <td>{{ row.method }}</td>
+                    <td><span class="status status-pass">{{ row.status }}</span></td>
+                </tr>
+                {% if row.note %}
+                <tr class="validation-note">
+                    <td></td>
+                    <td colspan="6">↳ {{ row.note }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p class="hint">
+        {{ validation_tolerance }} — ฟอร์มแสดง 3 ตำแหน่งทศนิยม
+        ตารางเต็ม สมการอ้างอิง และหลักฐานอยู่ใน <code>{{ validation_doc }}</code>
+    </p>
+</section>
+
 {% endblock %}

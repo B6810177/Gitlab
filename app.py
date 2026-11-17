@@ -1,6 +1,13 @@
 from flask import Flask, render_template, request
 
 from bjt_bias import validate, bias
+from bjt_bias.validation_results import (
+    VALIDATION_CASES,
+    VALIDATION_DATE,
+    VALIDATION_DOC,
+    VALIDATION_SHARED,
+    VALIDATION_TOLERANCE,
+)
 
 app = Flask(__name__)
 
@@ -102,6 +109,11 @@ def index():
         unit=unit,
         mode=mode,
         mode_label=MODE_LABELS.get(mode, mode),
+        validation_cases=VALIDATION_CASES,
+        validation_date=VALIDATION_DATE,
+        validation_shared=VALIDATION_SHARED,
+        validation_tolerance=VALIDATION_TOLERANCE,
+        validation_doc=VALIDATION_DOC,
     )
 
 

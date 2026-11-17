@@ -4,6 +4,9 @@
 แอปที่ตรวจ: BJT DC Bias Calculator (Flask) — `http://127.0.0.1:5000/`
 วิธีตรวจที่ใช้จริง: **OpenCode Browser** (Browser Tool ในตัว OpenCode Desktop) — ไม่ได้ใช้ Playwright MCP
 
+ตาราง A1–A5 นี้แสดงอยู่ในหน้าเว็บที่ส่วน **04 · VALIDATION A1–A5**
+ข้อมูลส่งมาจาก `bjt_bias/validation_results.py` ผ่าน `app.py` (ไม่มีการคำนวณใน HTML)
+
 ## ค่าที่ใช้ร่วมกันทุกกรณี
 
 VCC = 12 V, RC = 2.2 kΩ, β = 100, VBE = 0.70 V
@@ -67,6 +70,10 @@ VE = IE·RE ,  VB = VE + VBE ,  VC = VCC − IC·RC ,  VCE = VC − VE
 - Snapshot หลังส่งฟอร์ม A5:
   `"ไม่สามารถคำนวณได้ — ตรวจสอบข้อมูลที่กรอก"` → `"Fixed Bias: RB must be greater than 0"` → `"ยังไม่มีผลลัพธ์ · Fixed Bias"`
 - Screenshot A5: `docs/validation-artifacts/A5-fixed-rb0.png`
+- Screenshot ตารางในแอป (ส่วน 04 · VALIDATION A1–A5): `docs/validation-artifacts/validation-table.png`
+- ทวนซ้ำ A4 ด้วยฟอร์มจริงอีกรอบ: โหมด Emitter, VCC 12 / RB 1000 / RC 2.2 / β 100 / VBE 0.70 คงเดิม
+  เปลี่ยนเฉพาะ RE 1 → 2 kΩ แล้วกด Calculate — A3 ได้ IC 1.026 mA · VCE 8.705 V,
+  A4 ได้ IC 0.940 mA · VCE 8.033 V (ลดลงตามคำทำนาย)
 - ตรวจ Flask ตรงด้วย POST `mode=fixed&RB=0…`: HTTP 200, error เดียวกัน, ไม่มีบล็อก `.metrics`
 - ไม่มีการแก้โค้ดระหว่างรอบตรวจนี้ (ผลก่อน–หลังจึงไม่มี); `python -m unittest discover -s tests` ผ่าน 16/16
 
