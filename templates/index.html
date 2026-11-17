@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
-{# ---------- CIRCUIT ---------- #}
+{# ---------- CIRCUIT (แสดงเฉพาะโหมด Divider) ---------- #}
+{% if mode == 'divider' %}
 <section class="panel">
     <div class="panel-head">
         <div>
@@ -78,6 +79,7 @@
         </svg>
     </div>
 </section>
+{% endif %}
 
 {# ---------- INPUT FORM : MIDDLE OF PAGE ---------- #}
 <section class="panel form-panel" id="input">
@@ -90,6 +92,17 @@
     </div>
 
     <form method="post" action="/#results" novalidate>
+        <div class="mode-switch">
+            <label for="mode">โหมดไบอัส</label>
+            <select name="mode" id="mode" aria-label="เลือกโหมดไบอัส">
+                <option value="divider" {{ 'selected' if mode == 'divider' else '' }}>Voltage Divider Bias</option>
+                <option value="fixed" {{ 'selected' if mode == 'fixed' else '' }}>Fixed Bias</option>
+                <option value="emitter" {{ 'selected' if mode == 'emitter' else '' }}>Emitter Bias</option>
+            </select>
+            <button type="submit" name="action" value="switch" class="btn ghost">เปลี่ยนโหมด</button>
+            <p class="hint">เลือกโหมดแล้วกด “เปลี่ยนโหมด” เพื่อโหลดช่องกรอกที่ตรงกับโหมดนั้น</p>
+        </div>
+
         <fieldset class="group">
             <legend>แรงดันและกระแสไบอัส</legend>
             <div class="form-grid">
@@ -116,7 +129,8 @@
                     <option value="ohm" {{ 'selected' if unit == 'ohm' else '' }}>Ω</option>
                 </select>
             </legend>
-            <div class="form-grid form-grid-4">
+            <div class="form-grid {{ 'form-grid-4' if mode == 'divider' else ('form-grid-3' if mode == 'emitter' else 'form-grid-2') }}">
+                {% if mode == 'divider' %}
                 <label>
                     <span>R1</span>
                     <input name="R1" type="text" inputmode="decimal" autocomplete="off" value="{{ values.get('R1','') }}" required>
@@ -125,14 +139,22 @@
                     <span>R2</span>
                     <input name="R2" type="text" inputmode="decimal" autocomplete="off" value="{{ values.get('R2','') }}" required>
                 </label>
+                {% else %}
+                <label>
+                    <span>R<sub>B</sub></span>
+                    <input name="RB" type="text" inputmode="decimal" autocomplete="off" value="{{ values.get('RB','') }}" required>
+                </label>
+                {% endif %}
                 <label>
                     <span>R<sub>C</sub></span>
                     <input name="RC" type="text" inputmode="decimal" autocomplete="off" value="{{ values.get('RC','') }}" required>
                 </label>
+                {% if mode != 'fixed' %}
                 <label>
                     <span>R<sub>E</sub></span>
                     <input name="RE" type="text" inputmode="decimal" autocomplete="off" value="{{ values.get('RE','') }}" required>
                 </label>
+                {% endif %}
             </div>
         </fieldset>
 
@@ -148,7 +170,7 @@
     <div class="panel-head">
         <div>
             <p class="kicker">ผลลัพธ์ · OUTPUT</p>
-            <h2>DC Operating Point (Q-Point)</h2>
+            <h2>DC Operating Point (Q-Point) · {{ mode_label }}</h2>
         </div>
         <a class="jump" href="#input">↑ ไปที่แบบฟอร์มกรอกค่า</a>
     </div>
@@ -228,6 +250,7 @@
                 <span class="metric-value">{{ '%.3f'|format(result.IE * 1000) }}</span>
                 <span class="metric-unit">mA</span>
             </div>
+            {% if result.VTH is not none %}
             <div class="metric">
                 <span class="metric-label">V<sub>TH</sub></span>
                 <span class="metric-value">{{ '%.3f'|format(result.VTH) }}</span>
@@ -238,6 +261,7 @@
                 <span class="metric-value">{{ '%.1f'|format(result.RTH) }}</span>
                 <span class="metric-unit">Ω</span>
             </div>
+            {% endif %}
         </div>
 
         {% if result.warnings %}
@@ -254,8 +278,12 @@
                 <rect x="8" y="10" width="48" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="2.5"/>
                 <path d="M18 24h16M18 33h28M18 42h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
             </svg>
-            <h3>ยังไม่มีผลลัพธ์</h3>
-            <p>กรอกค่า V<sub>CC</sub>, R1, R2, R<sub>C</sub>, R<sub>E</sub>, β และ V<sub>BE</sub> ในแบบฟอร์มด้านบน แล้วกด <strong>Calculate DC Bias</strong></p>
+            <h3>ยังไม่มีผลลัพธ์ · {{ mode_label }}</h3>
+            <p>
+                กรอกค่า V<sub>CC</sub>,
+                {% if mode == 'divider' %}R1, R2, R<sub>C</sub>, R<sub>E</sub>{% else %}R<sub>B</sub>, R<sub>C</sub>{% if mode == 'emitter' %}, R<sub>E</sub>{% endif %}{% endif %},
+                β และ V<sub>BE</sub> ในแบบฟอร์มด้านบน แล้วกด <strong>Calculate DC Bias</strong>
+            </p>
             <a class="btn primary" href="#input">ไปที่แบบฟอร์มด้านบน ↑</a>
         </div>
     {% endif %}

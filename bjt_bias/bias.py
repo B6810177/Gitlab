@@ -1,11 +1,79 @@
-import math
-
-
 def _parallel(r1, r2):
     return (r1 * r2) / (r1 + r2)
 
 
+def _region_and_warnings(IB, IC, VCE):
+    """จัดภูมิภาคการทำงานและข้อความเตือน ใช้ร่วมกันทั้งสามโหมด"""
+    warnings = []
+    if IB <= 0 or IC <= 0:
+        warnings.append("Transistor likely in cutoff")
+        region = "cutoff"
+    else:
+        VCE_sat = 0.2
+        if VCE <= VCE_sat + 1e-9:
+            warnings.append("Transistor likely in saturation (V_CE near/at saturation)")
+            region = "saturation"
+        else:
+            region = "active"
+    return region, warnings
+
+
+def _result(IB, IC, IE, VB, VE, VC, VCE, region, warnings):
+    """ผลลัพธ์รูปแบบเดียวกันทุกโหมด: V เป็นโวลต์, กระแสเป็นแอมแปร์"""
+    return {
+        "region": region,
+        "IC": IC,
+        "IB": IB,
+        "IE": IE,
+        "VB": VB,
+        "VE": VE,
+        "VC": VC,
+        "VCE": VCE,
+        "VTH": None,
+        "RTH": None,
+        "calc_a": None,
+        "calc_b": None,
+        "verification": None,
+        "warnings": warnings,
+    }
+
+
+def calculate_fixed(VCC, RB, RC, beta, VBE):
+    """Fixed Bias: R_B จาก V_CC ไปเบส, อิมิตเตอร์ลงกราวด์, R_C ที่คอลเลกเตอร์
+
+    I_B = (V_CC - V_BE) / R_B
+    """
+    IB = (VCC - VBE) / RB
+    IC = beta * IB
+    IE = (beta + 1) * IB
+    VE = 0.0
+    VB = VBE
+    VC = VCC - IC * RC
+    VCE = VC - VE
+
+    region, warnings = _region_and_warnings(IB, IC, VCE)
+    return _result(IB, IC, IE, VB, VE, VC, VCE, region, warnings)
+
+
+def calculate_emitter(VCC, RB, RC, RE, beta, VBE):
+    """Emitter Bias: R_B จาก V_CC ไปเบส, R_E ที่อิมิตเตอร์, R_C ที่คอลเลกเตอร์
+
+    I_B = (V_CC - V_BE) / [R_B + (beta + 1) R_E]
+    """
+    IB = (VCC - VBE) / (RB + (beta + 1) * RE)
+    IC = beta * IB
+    IE = (beta + 1) * IB
+    VE = IE * RE
+    VB = VE + VBE
+    VC = VCC - IC * RC
+    VCE = VC - VE
+
+    region, warnings = _region_and_warnings(IB, IC, VCE)
+    return _result(IB, IC, IE, VB, VE, VC, VCE, region, warnings)
+
+
 def calculate_bias(VCC, R1, R2, RC, RE, beta, VBE):
+    """Voltage-Divider Bias (วิธีเดิมของ Lab 2): Thevenin base-loop + nodal check"""
     # Calc A: Thevenin base-loop
     VTH = VCC * R2 / (R1 + R2)
     RTH = _parallel(R1, R2)
@@ -36,31 +104,14 @@ def calculate_bias(VCC, R1, R2, RC, RE, beta, VBE):
     tol = 1e-9 * max(1.0, abs(IC_a), abs(IC_b))
     agree = delta_ic <= max(tol, 1e-12)
 
-    warnings = []
-    if IB_a <= 0 or IC_a <= 0:
-        warnings.append("Transistor likely in cutoff")
-        region = "cutoff"
-    else:
-        VCE_sat = 0.2
-        if VCE_a <= VCE_sat + 1e-9:
-            warnings.append("Transistor likely in saturation (V_CE near/at saturation)")
-            region = "saturation"
-        else:
-            region = "active"
+    region, warnings = _region_and_warnings(IB_a, IC_a, VCE_a)
 
-    return {
-        "region": region,
-        "IC": IC_a,
-        "IB": IB_a,
-        "IE": IE_a,
-        "VB": VB_a,
-        "VE": VE_a,
-        "VC": VC_a,
-        "VCE": VCE_a,
+    result = _result(IB_a, IC_a, IE_a, VB_a, VE_a, VC_a, VCE_a, region, warnings)
+    result.update({
         "VTH": VTH,
         "RTH": RTH,
         "calc_a": {"IB": IB_a, "IC": IC_a, "IE": IE_a, "VB": VB_a, "VE": VE_a, "VC": VC_a, "VCE": VCE_a},
         "calc_b": {"IB": IB_b, "IC": IC_b, "IE": IE_b, "VB": VB_b, "VE": VE_b, "VC": VC_b, "VCE": VCE_b},
         "verification": {"delta_ic": delta_ic, "agree": agree, "tolerance": tol},
-        "warnings": warnings,
-    }
+    })
+    return result

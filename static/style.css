@@ -239,6 +239,45 @@ main { padding-top: 26px; padding-bottom: 40px; }
     margin-top: 14px;
 }
 .form-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.form-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.form-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* ---------- Mode switch ---------- */
+.mode-switch {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: #f7ecff;
+    border: 1px solid #e2d1f7;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+}
+.mode-switch label {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--blue);
+}
+.mode-switch select {
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border: 1.5px solid #ddccef;
+    border-radius: 9px;
+    background: #fff;
+    color: var(--navy);
+    cursor: pointer;
+}
+.mode-switch select:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.16);
+}
+.mode-switch .btn { padding: 9px 16px; font-size: 14px; }
+.mode-switch .hint { flex: 1 1 220px; }
 
 .form-grid label {
     display: flex;
@@ -389,6 +428,7 @@ main { padding-top: 26px; padding-bottom: 40px; }
     .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .form-grid { grid-template-columns: 1fr 1fr; }
     .form-grid-4 { grid-template-columns: 1fr 1fr; }
+    .form-grid-3, .form-grid-2 { grid-template-columns: 1fr 1fr; }
     .btn { width: 100%; text-align: center; }
     .jump { display: none; }
 }

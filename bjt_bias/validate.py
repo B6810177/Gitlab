@@ -20,7 +20,26 @@ def _to_float(name, val):
     return f
 
 
+def _check_vcc(result):
+    if result["VCC"] <= 0:
+        raise ValueError("VCC must be greater than 0")
+
+
+def _check_resistors(result, names):
+    for name in names:
+        if result[name] <= 0:
+            raise ValueError(f"{name} must be greater than 0")
+
+
+def _check_device(result):
+    if result["beta"] <= 0:
+        raise ValueError("beta must be greater than 0")
+    if result["VBE"] < 0.4 or result["VBE"] >= result["VCC"]:
+        raise ValueError("VBE must be between 0.4 V and VCC (exclusive of VCC)")
+
+
 def validate_inputs(vcc, r1, r2, rc, re, beta, vbe):
+    """ตรวจอินพุตของโหมด Voltage-Divider Bias"""
     values = {
         "VCC": vcc,
         "R1": r1,
@@ -32,13 +51,42 @@ def validate_inputs(vcc, r1, r2, rc, re, beta, vbe):
     }
     result = {name: _to_float(name, val) for name, val in values.items()}
 
-    if result["VCC"] <= 0:
-        raise ValueError("VCC must be greater than 0")
-    for rname in ["R1", "R2", "RC", "RE"]:
-        if result[rname] <= 0:
-            raise ValueError(f"{rname} must be greater than 0")
-    if result["beta"] <= 0:
-        raise ValueError("beta must be greater than 0")
-    if result["VBE"] < 0.4 or result["VBE"] >= result["VCC"]:
-        raise ValueError("VBE must be between 0.4 V and VCC (exclusive of VCC)")
+    _check_vcc(result)
+    _check_resistors(result, ("R1", "R2", "RC", "RE"))
+    _check_device(result)
+    return result
+
+
+def validate_fixed(vcc, rb, rc, beta, vbe):
+    """ตรวจอินพุตของโหมด Fixed Bias (ไม่มี R_E)"""
+    values = {
+        "VCC": vcc,
+        "RB": rb,
+        "RC": rc,
+        "beta": beta,
+        "VBE": vbe,
+    }
+    result = {name: _to_float(name, val) for name, val in values.items()}
+
+    _check_vcc(result)
+    _check_resistors(result, ("RB", "RC"))
+    _check_device(result)
+    return result
+
+
+def validate_emitter(vcc, rb, rc, re, beta, vbe):
+    """ตรวจอินพุตของโหมด Emitter Bias"""
+    values = {
+        "VCC": vcc,
+        "RB": rb,
+        "RC": rc,
+        "RE": re,
+        "beta": beta,
+        "VBE": vbe,
+    }
+    result = {name: _to_float(name, val) for name, val in values.items()}
+
+    _check_vcc(result)
+    _check_resistors(result, ("RB", "RC", "RE"))
+    _check_device(result)
     return result
