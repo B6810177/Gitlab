@@ -309,6 +309,74 @@ main { padding-top: 26px; padding-bottom: 40px; }
     background: #fff;
 }
 
+/* ---------- Engineering model ---------- */
+.model-lead {
+    margin: 0 0 18px;
+    font-size: 14.5px;
+    color: #4b2e6b;
+    max-width: 860px;
+}
+.model-lead strong { color: var(--navy); }
+
+.model-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+}
+.model-grid-2 { margin-top: 14px; }
+
+.model-card {
+    background: #fbf8ff;
+    border: 1px solid var(--line);
+    border-left: 4px solid #c4b5fd;
+    border-radius: 10px;
+    padding: 14px 16px;
+    min-width: 0;
+}
+.model-card h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.model-card p { margin: 6px 0 0; font-size: 13.5px; color: var(--muted); }
+.model-card .formula {
+    font-family: "Cambria Math", Cambria, Georgia, serif;
+    font-size: 14px;
+    color: var(--navy);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 7px 10px;
+    overflow-wrap: anywhere;
+}
+.model-card-active {
+    border-left-color: var(--teal);
+    background: #fff7fb;
+    box-shadow: 0 6px 18px rgba(236, 72, 153, 0.10);
+}
+.badge {
+    font-family: Tahoma, "Noto Sans Thai", sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
+    border-radius: 999px;
+    padding: 2px 9px;
+    white-space: nowrap;
+}
+.model-list {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    font-size: 13.5px;
+    color: var(--ink);
+}
+.model-list li { margin: 3px 0; }
+.model-panel .hint { margin-top: 16px; display: block; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 860px) {
     .metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }

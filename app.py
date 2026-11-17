@@ -50,5 +50,13 @@ def index():
     )
 
 
+@app.after_request
+def no_store_html(response):
+    """กันเบราว์เซอร์แคชหน้า HTML ไว้ ทำให้แก้ template แล้วเห็นผลทันที"""
+    if response.mimetype == "text/html":
+        response.headers["Cache-Control"] = "no-store, max-age=0"
+    return response
+
+
 if __name__ == "__main__":
     app.run(debug=True)

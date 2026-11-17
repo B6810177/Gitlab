@@ -261,4 +261,65 @@
     {% endif %}
 </section>
 
+{# ---------- ENGINEERING MODEL ---------- #}
+<section class="panel model-panel">
+    <div class="panel-head">
+        <div>
+            <p class="kicker">03 · ENGINEERING MODEL</p>
+            <h2>แบบจำลอง DC ของ BJT NPN · Common Emitter</h2>
+        </div>
+    </div>
+
+    <p class="model-lead">
+        แบบจำลองนี้ใช้สมมติฐาน <strong>β คงที่</strong> และ <strong>V<sub>BE</sub> คงที่</strong>
+        (Forward-Active Approximation) โดยแทนวงจรแบ่งแรงดันที่เบสด้วยแหล่งจ่ายเทียบเท่าเทเวนิน
+        แล้วแก้สมการลูปเบส–อิมิตเตอร์เพื่อหา I<sub>B</sub> ก่อนคำนวณปริมาณ DC ที่เหลือทั้งหมด
+    </p>
+
+    <div class="model-grid">
+        <article class="model-card">
+            <h3>Fixed Bias</h3>
+            <p class="formula">I<sub>B</sub> = (V<sub>CC</sub> − V<sub>BE</sub>) / R<sub>B</sub></p>
+            <p>ไบอัสผ่าน R<sub>B</sub> ตัวเดียวจาก V<sub>CC</sub> ไปยังเบส ไม่มี R<sub>E</sub> ช่วย stabilize</p>
+        </article>
+        <article class="model-card">
+            <h3>Emitter Bias</h3>
+            <p class="formula">I<sub>B</sub> = (V<sub>CC</sub> − V<sub>BE</sub>) / [R<sub>B</sub> + (β + 1)R<sub>E</sub>]</p>
+            <p>มี R<sub>E</sub> ที่อิมิตเตอร์ ทำให้กระแสไบอัสเสถียรขึ้นเมื่อ β เปลี่ยน</p>
+        </article>
+        <article class="model-card model-card-active">
+            <h3>Voltage Divider Bias <span class="badge">ใช้ในแลปนี้</span></h3>
+            <p class="formula">V<sub>TH</sub> = V<sub>CC</sub> R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>)</p>
+            <p class="formula">R<sub>TH</sub> = R<sub>1</sub> ∥ R<sub>2</sub></p>
+            <p class="formula">I<sub>B</sub> = (V<sub>TH</sub> − V<sub>BE</sub>) / [R<sub>TH</sub> + (β + 1)R<sub>E</sub>]</p>
+            <p>R<sub>1</sub>–R<sub>2</sub> ตรึงแรงดันที่เบส และ R<sub>E</sub> ป้อนกลับลบให้ Q-point นิ่งที่สุด</p>
+        </article>
+    </div>
+
+    <div class="model-grid model-grid-2">
+        <article class="model-card">
+            <h3>สมการที่ใช้หา Q-point</h3>
+            <ul class="model-list">
+                <li>I<sub>C</sub> = β I<sub>B</sub> &nbsp;·&nbsp; I<sub>E</sub> = (β + 1) I<sub>B</sub></li>
+                <li>V<sub>E</sub> = I<sub>E</sub> R<sub>E</sub></li>
+                <li>V<sub>C</sub> = V<sub>CC</sub> − I<sub>C</sub> R<sub>C</sub></li>
+                <li>V<sub>CE</sub> = V<sub>C</sub> − V<sub>E</sub></li>
+            </ul>
+        </article>
+        <article class="model-card">
+            <h3>เงื่อนไขภูมิภาคการทำงาน</h3>
+            <ul class="model-list">
+                <li><strong>Cutoff</strong> — I<sub>B</sub> ≈ 0</li>
+                <li><strong>Saturation</strong> — V<sub>CE</sub> ≤ 0.2 V</li>
+                <li><strong>Forward Active</strong> — V<sub>CE</sub> &gt; 0.2 V และ I<sub>B</sub> &gt; 0</li>
+            </ul>
+        </article>
+    </div>
+
+    <p class="hint">
+        หน่วย: V เป็นโวลต์ (V), กระแสเป็น mA / µA, ความต้านทานเป็น Ω หรือ kΩ
+        (1 MΩ = 1,000 kΩ) — โปรแกรมนี้วิเคราะห์เฉพาะ DC ไม่รวมผลตอบสนองความถี่ (AC)
+    </p>
+</section>
+
 {% endblock %}
