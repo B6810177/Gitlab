@@ -10,7 +10,7 @@ Flask web app สำหรับคำนวณ DC Operating Point (Q-point) ข
 |---|---|
 | GitHub repository | <https://github.com/B6810177/Gitlab> |
 | Branch | `main` |
-| Commit SHA (งาน Lab 3) | `PENDING_LAB3_SHA` |
+| Commit SHA (งาน Lab 3) | `d57f6b22d82e7727e507fa2f0981576c526d26b8` |
 | เปิดเว็บ (หลังรัน Flask) | <http://127.0.0.1:5000/> |
 | ตารางตรวจรับในแอป | เมนูหน้าเว็บส่วน **04 · VALIDATION A1–A5** |
 | เอกสารตรวจรับฉบับเต็ม | [`docs/validation.md`](docs/validation.md) |
