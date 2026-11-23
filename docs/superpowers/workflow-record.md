@@ -16,7 +16,15 @@
 
 ## ผลตรวจจริง
 
-_(รันแล้วจะเติมจำนวนเทสต์ ค่าที่ได้ และ commit hash ที่นี่)_
+- `.\.venv\Scripts\python.exe -m unittest discover -s tests -v` → **Ran 19 tests … OK**
+  (เดิม 16 + `tests/test_structure.py` 3 รายการ)
+- `GET http://127.0.0.1:5000/` → 200, ฟอร์มครบ 7 ช่อง และมี SVG ของวงจร
+- `POST /` ด้วยชุดค่า Divider (VCC 12, R1 100k, R2 22k, RC 2.2k, RE 1k, β 100, VBE 0.7) → 200
+  ค่าที่แสดงตรงอ้างอิง: IC **1.230 mA**, VCE **8.052 V**, VB **1.942 V**,
+  VTH **2.164 V**, RTH **18032.8 Ω**
+- RED → GREEN: ก่อนสร้าง record และลิงก์ README เทสต์ `test_workflow_files_exist`
+  และ `test_readme_links_local_server_and_record` ล้มเหลว หลังสร้างผ่านทั้งคู่
+- Commit ของขั้น Execute: `e53470e` (`test: pin Superpowers workflow artifacts and record`)
 
 ## ขอบเขต
 
