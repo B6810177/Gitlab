@@ -30,6 +30,8 @@ Branch: **main** / **(root)** → Save แล้วเปิด `https://b681017
 ผลตรวจการติดตั้ง Git / OpenCode Desktop / AI Model / Python:
 [docs/lab4-environment.md](docs/lab4-environment.md)
 
+[Superpowers workflow record](docs/superpowers/workflow-record.md) — ลำดับการทำงานตามหัวข้อ 05 และหลักฐานที่รันจริง
+
 ## โครงสร้าง Web App (หลายไฟล์)
 
 ```
