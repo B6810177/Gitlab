@@ -53,10 +53,20 @@ Project ที่พัฒนา: [Gitlab](https://github.com/B6810177/Gitlab)
 
 หมายเหตุ: หลังบันทึกไฟล์ OpenCode โหลด Plugin ให้อัตโนมัติ (ไม่ต้องปิด/เปิดแอปใหม่ในเครื่องนี้) — หากเครื่องอื่นไม่ขึ้น Skill ให้ปิด/เปิด OpenCode Desktop ใหม่ แล้วตรวจ `plugin list` และ Config/Logs อีกครั้ง
 
+## 2.4 Checklist ก่อนเริ่มงานจริง
+
+| รายการ | คำสั่ง/วิธีตรวจ | ผลที่ได้ | สถานะ |
+|---|---|---|---|
+| Git ใช้งานได้ | `git --version` | `git version 2.56.0.windows.4` | ✅ |
+| GitHub Repository เปิดได้ | `git rev-parse --show-toplevel`, `git remote -v` | `...\Gitlab` → `https://github.com/B6810177/Gitlab.git` (branch `main` ตรงกับ origin) | ✅ |
+| OpenCode Desktop ส่งข้อความได้ | สนทนากับ Agent ใน OpenCode Desktop | ตอบกลับได้ปกติ (โมเดล DeepSeek V4.1 Flash Free) | ✅ |
+| Superpowers โหลด `brainstorming` ได้ | เรียก Skill `brainstorming` | โหลดเนื้อหา Skill สำเร็จ | ✅ |
+| Python ใช้งานได้ | `python --version` | `Python 3.12.10` | ✅ |
+
 ## สรุปสิ่งที่ยังขาด
 
-1. **หลักฐานภาพหน้าจอ (screenshots)** ของ About/Settings ใน OpenCode Desktop, หน้าต่าง Project Folder และรายการ Skill — ต้องกดเก็บจากเครื่องเอง เพราะเป็นภาพหน้าจอของผู้ใช้
-2. **รายละเอียด Lab 4 ข้อถัดไป (2.4 เป็นต้นไป)** ยังไม่ได้รับ จึงยังไม่ทราบว่าต้องส่งชิ้นงาน/ฟีเจอร์อะไรเพิ่ม
+1. **หลักฐานภาพหน้าจอ (screenshots)** ของ About/Settings ใน OpenCode Desktop, หน้าต่าง Project Folder, หน้า Plugins และรายการ Skill — ต้องกดเก็บจากเครื่องเอง เพราะเป็นภาพหน้าจอของผู้ใช้
+2. **รายละเอียด Lab 4 ข้อถัดไป (2.5 เป็นต้นไป)** ยังไม่ได้รับ จึงยังไม่ทราบว่าต้องส่งชิ้นงาน/ฟีเจอร์อะไรเพิ่ม
 3. **Project Folder ที่เปิดใน IDE** ปัจจุบันคือ `Default Project` ซึ่งมี repo อยู่ภายในโฟลเดอร์ `Gitlab` — ถ้าอาจารย์ต้องการให้เปิดที่ root ของ repo โดยตรง สามารถเปิด `Gitlab` เป็น Project Folder ได้
 
 ## คำสั่งที่ใช้รันโปรเจกต์ (อ้างอิง)
