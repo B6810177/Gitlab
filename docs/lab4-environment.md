@@ -1,6 +1,6 @@
 # Lab 4 — ผลการเตรียมสภาพแวดล้อม (ข้อ 2.1–2.2)
 
-วันที่ตรวจ: 23 พ.ย. 2026
+วันที่ตรวจ: 23–24 พ.ย. 2026
 เครื่องที่ใช้: Windows (x64)
 Project ที่พัฒนา: [Gitlab](https://github.com/B6810177/Gitlab)
 
@@ -30,10 +30,33 @@ Project ที่พัฒนา: [Gitlab](https://github.com/B6810177/Gitlab)
 
 หมายเหตุ: `opencode` CLI ไม่ได้อยู่ใน `PATH` ของเครื่อง (ตามคู่มือระบุว่าไม่จำเป็นสำหรับการติดตั้งแบบ Desktop-only) — ใช้ `opencode-cli.exe` ที่อยู่ในโฟลเดอร์ติดตั้งของแอปได้ถ้าต้องการตรวจเวอร์ชัน
 
+## 2.3 ติดตั้ง Superpowers Plugin สำหรับ OpenCode
+
+| ขั้นตอน | วิธีตรวจ | ผลที่ได้ | สถานะ |
+|---|---|---|---|
+| สร้าง/แก้ไฟล์ตั้งค่า | เปิด `%USERPROFILE%\.config\opencode\opencode.json` | สร้างไฟล์ใหม่พร้อมคีย์ `plugins` (ไม่แตะ Model/Provider เดิม) | ✅ |
+| เลือกคีย์ให้ตรงเวอร์ชัน | OpenCode `v2.2.7` (V2 ต้องใช้ `plugins`) | ใช้ `"plugins": ["superpowers@git+https://github.com/obra/superpowers.git"]` | ✅ |
+| ติดตั้ง Plugin | `opencode-cli plugin list` | `superpowers  22f0b46  superpowers@git+https://github.com/obra/superpowers.git` | ✅ |
+| ลงทะเบียน Skills | ตรวจรายการ Skill ในเซสชันใหม่ | พบ `brainstorming`, `writing-plans`, `executing-plans`, `subagent-driven-development`, `systematic-debugging`, `test-driven-development` ฯลฯ | ✅ |
+| ทดสอบโหลด Skill | เรียกใช้ Skill `brainstorming` | โหลดเนื้อหา Skill สำเร็จ | ✅ |
+
+ไฟล์ตั้งค่าที่ใช้:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": [
+    "superpowers@git+https://github.com/obra/superpowers.git"
+  ]
+}
+```
+
+หมายเหตุ: หลังบันทึกไฟล์ OpenCode โหลด Plugin ให้อัตโนมัติ (ไม่ต้องปิด/เปิดแอปใหม่ในเครื่องนี้) — หากเครื่องอื่นไม่ขึ้น Skill ให้ปิด/เปิด OpenCode Desktop ใหม่ แล้วตรวจ `plugin list` และ Config/Logs อีกครั้ง
+
 ## สรุปสิ่งที่ยังขาด
 
-1. **หลักฐานภาพหน้าจอ (screenshots)** ของ About/Settings ใน OpenCode Desktop และหน้าต่าง Project Folder — ต้องกดเก็บจากเครื่องเอง เพราะเป็นภาพหน้าจอของผู้ใช้
-2. **รายละเอียด Lab 4 ข้อถัดไป (2.3 เป็นต้นไป)** ยังไม่ได้รับ จึงยังไม่ทราบว่าต้องส่งชิ้นงาน/ฟีเจอร์อะไรเพิ่ม
+1. **หลักฐานภาพหน้าจอ (screenshots)** ของ About/Settings ใน OpenCode Desktop, หน้าต่าง Project Folder และรายการ Skill — ต้องกดเก็บจากเครื่องเอง เพราะเป็นภาพหน้าจอของผู้ใช้
+2. **รายละเอียด Lab 4 ข้อถัดไป (2.4 เป็นต้นไป)** ยังไม่ได้รับ จึงยังไม่ทราบว่าต้องส่งชิ้นงาน/ฟีเจอร์อะไรเพิ่ม
 3. **Project Folder ที่เปิดใน IDE** ปัจจุบันคือ `Default Project` ซึ่งมี repo อยู่ภายในโฟลเดอร์ `Gitlab` — ถ้าอาจารย์ต้องการให้เปิดที่ root ของ repo โดยตรง สามารถเปิด `Gitlab` เป็น Project Folder ได้
 
 ## คำสั่งที่ใช้รันโปรเจกต์ (อ้างอิง)
