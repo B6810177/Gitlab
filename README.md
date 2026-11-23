@@ -30,4 +30,48 @@ Branch: **main** / **(root)** → Save แล้วเปิด `https://b681017
 ผลตรวจการติดตั้ง Git / OpenCode Desktop / AI Model / Python:
 [docs/lab4-environment.md](docs/lab4-environment.md)
 
+## โครงสร้าง Web App (หลายไฟล์)
+
+```
+Gitlab/
+├── app.py                      # Flask route: รับ HTTP request, แปลงหน่วย, ส่งผลให้ template
+├── dc_bias.py                  # public entry point → bjt_bias/bias.py (3 โหมด)
+├── bjt_bias/
+│   ├── bias.py                 # สมการ DC bias (VTH, RTH, IB, IC, VCE, region)
+│   ├── validate.py             # ตรวจอินพุต (comma, ช่องว่าง, ช่วงค่า)
+│   └── validation_results.py   # ข้อมูลตารางตรวจรับ A1–A5
+├── templates/
+│   ├── base.html               # โครงหน้าเว็บ + โหลด CSS
+│   └── index.html              # ฟอร์ม + ผลลัพธ์ (Jinja2)
+├── static/
+│   ├── style.css               # ธีม/เลย์เอาต์
+│   └── app.js                  # ตัวคำนวณของหน้า static เดิม
+├── tests/
+│   ├── test_dc_bias.py         # ทดสอบสมการ/validation
+│   └── test_web.py             # ทดสอบ GET/POST และ layout
+├── docs/
+│   ├── design-note.md          # สถาปัตยกรรม + data flow
+│   ├── validation.md           # ผลตรวจรับ A1–A5
+│   ├── reflection.md           # สิ่งที่ learned จาก Lab
+│   └── lab4-environment.md     # ผลตรวจ 2.1–2.4
+├── requirements.txt
+├── AGENTS.md
+└── README.md
+```
+
+## วิธีรัน (ต้องเปิดผ่าน Local Server — ห้าม double-click index.html)
+
+```powershell
+cd "C:\Users\User\Documents\Default Project\Gitlab"
+.\.venv\Scripts\python.exe -m flask --app app run --debug --port 5000
+```
+
+แล้วเปิด <http://127.0.0.1:5000/>
+
+**ทำไมต้องเป็น Local Server:** หน้าเวอร์ชัน Flask (`app.py` + `templates/`) ต้องการ Backend
+รับ `POST /` และให้ Python คำนวณ DC Operating Point — การเปิด `index.html` ด้วย `file://`
+จะได้เฉพาะหน้า static (JavaScript คำนวณเอง) ซึ่งไม่ใช่ Web App ตามโจทย์ Lab 4
+
+รันเทสต์: `.\.venv\Scripts\python.exe -m unittest discover -s tests -v`
+
 
