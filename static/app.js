@@ -165,7 +165,27 @@
         els.regionDesc.textContent = text.desc;
     }
 
-    function render(r) {
+    function setSchematic(raw) {
+        var unit = raw.unit === "kohm" ? "kΩ" : "Ω";
+        var texts = {
+            "sch-VCC": raw.VCC ? " = " + raw.VCC + " V" : "",
+            "sch-R1": raw.R1 ? raw.R1 + " " + unit : "",
+            "sch-R2": raw.R2 ? raw.R2 + " " + unit : "",
+            "sch-RC": raw.RC ? raw.RC + " " + unit : "",
+            "sch-RE": raw.RE ? raw.RE + " " + unit : ""
+        };
+        Object.keys(texts).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = texts[id];
+        });
+
+        var beta = document.getElementById("sch-beta");
+        if (beta) {
+            beta.textContent = raw.beta ? "(β = " + raw.beta + ")" : "(β)";
+        }
+    }
+
+    function render(r, raw) {
         els.errorBox.classList.add("hidden");
         els.empty.classList.add("hidden");
         els.result.classList.remove("hidden");
@@ -194,6 +214,7 @@
             els.warningBox.classList.add("hidden");
         }
 
+        setSchematic(raw);
         scrollToResults();
     }
 
@@ -207,7 +228,7 @@
             return;
         }
 
-        render(calculate(parsed.values, raw.unit));
+        render(calculate(parsed.values, raw.unit), raw);
     });
 
     form.addEventListener("reset", function () {
@@ -215,6 +236,7 @@
             els.result.classList.add("hidden");
             els.errorBox.classList.add("hidden");
             els.empty.classList.remove("hidden");
+            setSchematic(readForm());
         }, 0);
     });
 })();
