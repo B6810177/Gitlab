@@ -25,4 +25,9 @@ Flask web app สำหรับคำนวณ DC Operating Point ของว�
 ถ้าจะใช้ GitHub Pages: Settings → Pages → Source: **Deploy from a branch** →
 Branch: **main** / **(root)** → Save แล้วเปิด `https://b6810177.github.io/Gitlab/`
 
+## Lab 4 — การเตรียมสภาพแวดล้อม
+
+ผลตรวจการติดตั้ง Git / OpenCode Desktop / AI Model / Python:
+[docs/lab4-environment.md](docs/lab4-environment.md)
+
 
