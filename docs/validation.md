@@ -1,99 +1,40 @@
-# Validation — ตารางตรวจรับ A1–A5
-
-วันที่ตรวจ: 2026-11-17
-แอปที่ตรวจ: BJT DC Bias Calculator (Flask) — `http://127.0.0.1:5000/`
-วิธีตรวจที่ใช้จริง: **OpenCode Browser** (Browser Tool ในตัว OpenCode Desktop) — ไม่ได้ใช้ Playwright MCP
-
-ตาราง A1–A5 นี้แสดงอยู่ในหน้าเว็บที่ส่วน **04 · VALIDATION A1–A5**
-ข้อมูลส่งมาจาก `bjt_bias/validation_results.py` ผ่าน `app.py` (ไม่มีการคำนวณใน HTML)
-
-## ค่าที่ใช้ร่วมกันทุกกรณี
-
-VCC = 12 V, RC = 2.2 kΩ, β = 100, VBE = 0.70 V
-ป้อนค่าตามหน่วยบนฟอร์ม (ฟอร์มเริ่มที่ kΩ; 1 MΩ = 1000 kΩ)
-
-## เกณฑ์ตัดสิน
-
-- IC: |ค่าที่เห็น − ค่าอ้างอิงที่ยังไม่ปัดเศษ| ≤ **0.01 mA**
-- VCE: |ค่าที่เห็น − ค่าอ้างอิงที่ยังไม่ปัดเศษ| ≤ **0.02 V**
-- ฟอร์มแสดงทศนิยม 3 ตำแหน่ง (IC เป็น mA, VCE เป็น V) → ความคลาดเคลื่อนจากการปัดเศษ ≤ 0.0005 ซึ่งเล็กกว่าเกณฑ์มาก
-- A4 ต้องเทียบ "ทิศทาง" ของ IC กับคำทำนายของกลุ่มด้วย
-- A5 ต้องมีข้อความให้แก้, หน้าเว็บไม่ล่ม, และไม่แสดงผลของรอบก่อนเป็นผลของรอบนี้
-
-## สมการอ้างอิง (จาก Engineering Electronics — ไม่ได้มาจากโปรแกรมที่ตรวจ)
-
-**Voltage-Divider (A1)**
-```
-VTH = VCC·R2/(R1+R2)
-RTH = R1‖R2
-IB  = (VTH − VBE) / [RTH + (β+1)RE]
-IC  = β·IB ,  IE = (β+1)·IB
-VE  = IE·RE ,  VB = VE + VBE
-VC  = VCC − IC·RC ,  VCE = VC − VE
-```
-
-**Fixed Bias (A2, A5)** — อิมิตเตอร์ต่อกราวด์ ไม่มี RE
-```
-IB = (VCC − VBE)/RB ,  IC = β·IB ,  IE = (β+1)·IB
-VE = 0 ,  VB = VBE ,  VC = VCC − IC·RC ,  VCE = VC
-```
-
-**Emitter Bias (A3, A4)**
-```
-IB = (VCC − VBE) / [RB + (β+1)RE] ,  IC = β·IB ,  IE = (β+1)·IB
-VE = IE·RE ,  VB = VE + VBE ,  VC = VCC − IC·RC ,  VCE = VC − VE
-```
-
-### ค่าอ้างอิงที่ยังไม่ปัดเศษ
-
-| กรณี | IB | IC (mA) | IE (mA) | VE (V) | VC (V) | VCE (V) |
-|---|---|---|---|---|---|---|
-| A1 Divider R1=100k, R2=22k, RE=1k | 12.298581 µA | **1.229858** | 1.242157 | 1.242157 | 9.294312 | **8.052155** |
-| A2 Fixed RB=1M | 11.300000 µA | **1.130000** | 1.141300 | 0.000000 | 9.514000 | **9.514000** |
-| A3 Emitter RB=1M, RE=1k | 10.263397 µA | **1.026340** | 1.036603 | 1.036603 | 9.742053 | **8.705450** |
-| A4 Emitter RB=1M, RE=2k | 9.400998 µA | **0.940100** | 0.949501 | 1.899002 | 9.931780 | **8.032779** |
-
-## ตารางตรวจรับ
-
-| กรณี | เลือกโหมดและกรอกค่า | คาดหมายก่อนรัน | เห็นจริง | วิธีตรวจ | สถานะ |
-|---|---|---|---|---|---|
-| A1 · โหมดเดิม | Divider · R1 = 100 kΩ, R2 = 22 kΩ, RC = 2.2 kΩ, RE = 1 kΩ, VCC = 12 V, β = 100, VBE = 0.70 V | ต้องตรงกับ Lab 2 ก่อนแก้: IC = **1.229858 mA** (แสดง 1.230), VCE = **8.052155 V** (แสดง 8.052) | **IC 1.230 mA · VCE 8.052 V** (VB 1.942 V, VE 1.242 V, VC 9.294 V, IB 12.30 µA, IE 1.242 mA, VTH 2.164 V, RTH 18,032.8 Ω) — ΔIC 0.000142, ΔVCE 0.000155 | OpenCode Browser (เลือก Divider, กรอกฟอร์ม, กด Calculate) | **PASS** |
-| A2 · Fixed | Fixed · RB = 1 MΩ (1000 kΩ), RC = 2.2 kΩ, VCC = 12 V, β = 100, VBE = 0.70 V — ไม่กรอก RE | IC = **1.130000 mA**, VCE = **9.514000 V**; ฟอร์มต้องไม่มีช่อง RE | **IC 1.130 mA · VCE 9.514 V** (VB 0.700 V, VE 0.000 V, VC 9.514 V, IB 11.30 µA, IE 1.141 mA); ฟอร์มมีเฉพาะ VCC, β, VBE, RB, RC — **ไม่มีช่อง RE** — ΔIC 0.000000, ΔVCE 0.000000 | OpenCode Browser (สลับเป็น Fixed, กรอกฟอร์ม, กด Calculate) | **PASS** |
-| A3 · Emitter | Emitter · RB = 1 MΩ (1000 kΩ), RE = 1 kΩ, RC = 2.2 kΩ, VCC = 12 V, β = 100, VBE = 0.70 V | IC = **1.026340 mA**, VCE = **8.705450 V**; ต้องมีช่อง RE และใช้ค่าที่กรอก | **IC 1.026 mA · VCE 8.705 V** (VB 1.737 V, VE 1.037 V, VC 9.742 V, IB 10.26 µA, IE 1.037 mA); มีช่อง RE และใช้ค่า 1 kΩ — ΔIC 0.000340, ΔVCE 0.000450 | OpenCode Browser (สลับเป็น Emitter, กรอกฟอร์ม, กด Calculate) | **PASS** |
-| A4 · เปลี่ยนค่าเดียว | Emitter · เหมือน A3 ทุกค่า แต่เปลี่ยน RE = 2 kΩ | **ทำนาย: IC ลดลง** จาก A3 เพราะ RE ใหญ่ขึ้น → ตัวส่วน [RB+(β+1)RE] ใหญ่ขึ้น → IB ลด → IC ลด; คาด IC = **0.940100 mA**, VCE = **8.032779 V** | **IC 0.940 mA · VCE 8.033 V** (VB 2.599 V, VE 1.899 V, VC 9.932 V, IB 9.40 µA, IE 0.950 mA); ก่อนกดคำนวณยืนยันโหมด Emitter และ VCC 12 / RB 1000 / RC 2.2 / β 100 / VBE 0.70 เท่าเดิม เปลี่ยนเฉพาะ RE 1→2 — **IC ลดลงจริง 1.026 → 0.940 mA** — ΔIC 0.000100, ΔVCE 0.000221 | OpenCode Browser (เปลี่ยนเฉพาะช่อง RE, กด Calculate) | **PASS** |
-| A5 · อินพุตผิด | Fixed · RB = 0, RC = 2.2 kΩ, VCC = 12 V, β = 100, VBE = 0.70 V | Flask ต้องตอบ error เรื่อง RB (คาดว่า "Fixed Bias: RB must be greater than 0"), หน้าเว็บไม่ล่ม, ไม่มีตัวเลขผลลัพธ์ของรอบนี้ | **"Fixed Bias: RB must be greater than 0"** ใต้หัวข้อ "ไม่สามารถคำนวณได้ — ตรวจสอบข้อมูลที่กรอก"; ไม่มี `.metrics`, ฟอร์มยังอยู่, ขึ้น empty state "ยังไม่มีผลลัพธ์ · Fixed Bias"; POST ตรงถึง Flask (ไม่ผ่านฟอร์ม) ได้ HTTP 200 + ข้อความเดียวกัน และ HTML มี `novalidate` → ข้อความมาจาก **Flask** | OpenCode Browser + POST ตรงถึง Flask (urllib) | **PASS** |
-
-## หลักฐาน
-
-- Snapshot หลังส่งฟอร์ม A1 (ข้อความจากหน้าเว็บ):
-  `"DC Operating Point (Q-Point) · Voltage Divider Bias"` … `"8.052"` `"V"` … `"1.230"` `"mA"`
-- Snapshot หลังส่งฟอร์ม A5:
-  `"ไม่สามารถคำนวณได้ — ตรวจสอบข้อมูลที่กรอก"` → `"Fixed Bias: RB must be greater than 0"` → `"ยังไม่มีผลลัพธ์ · Fixed Bias"`
-- Screenshot A5: `docs/validation-artifacts/A5-fixed-rb0.png`
-- Screenshot ตารางในแอป (ส่วน 04 · VALIDATION A1–A5): `docs/validation-artifacts/validation-table.png`
-- ทวนซ้ำ A4 ด้วยฟอร์มจริงอีกรอบ: โหมด Emitter, VCC 12 / RB 1000 / RC 2.2 / β 100 / VBE 0.70 คงเดิม
-  เปลี่ยนเฉพาะ RE 1 → 2 kΩ แล้วกด Calculate — A3 ได้ IC 1.026 mA · VCE 8.705 V,
-  A4 ได้ IC 0.940 mA · VCE 8.033 V (ลดลงตามคำทำนาย)
-- ตรวจ Flask ตรงด้วย POST `mode=fixed&RB=0…`: HTTP 200, error เดียวกัน, ไม่มีบล็อก `.metrics`
-- ไม่มีการแก้โค้ดระหว่างรอบตรวจนี้ (ผลก่อน–หลังจึงไม่มี); `python -m unittest discover -s tests` ผ่าน 16/16
-
-## สรุป
+## สรุป A1–A5
 
 | กรณี | ผล |
 |---|---|
 | A1 | PASS |
 | A2 | PASS |
 | A3 | PASS |
-| A4 | PASS (ทิศทาง IC ลดลงตรงคำทำนาย) |
+| A4 | PASS (ทิศทาง IC ลดตามคาด) |
 | A5 | PASS (Flask ตรวจ RB > 0) |
 
-หมายเหตุแยกต่างหาก (ไม่เกี่ยวกับ A1–A5): หาก POST `mode=bogus` ตรง ๆ หน้าเว็บจะขึ้นหัวข้อ `· bogus` และวงจร Emitter เพราะ template ตกไปที่ `{% else %}` — ยังแสดง error และไม่คำนวณ แต่ถ้าต้องการให้เรียบร้อยสามารถแก้ภายหลังได้
+หมายเหตุเพิ่มเติม: เคยพบกรณี POST ผิดรูปแบบอาจทำให้ข้อความ error แสดงร่วมกับผลคำนวณในบาง path ของ template — บันทึกเป็นข้อสังเกตสำหรับการปรับปรุงภายหลัง (ไม่กระทบผล A1–A5 ที่ตรวจแล้ว)
 
-## หมายเหตุ
+## ข้อจำกัด
 
-- A1 ต้องเทียบกับค่าที่ Lab 2 เดิมได้ (VCE 8.052 V, IC 1.230 mA) — ค่าอ้างอิงตรงกัน
-- A5: ฟอร์มมี `novalidate` จึงไม่ถูกบล็อกฝั่งเบราว์เซอร์ ข้อความที่เห็นจึงมาจาก Flask โดยตรง
-- ถ้าพบผลไม่ตรง: บันทึกผลก่อน–หลังและรันซ้ำเฉพาะกรณีที่ได้รับผลกระทบ
+- A1 เทียบกับค่าที่เคยยืนยันใน Lab 2/เอกสารอ้างอิงของโปรเจกต์
+- A5: การแจ้งเตือนฝั่งเซิร์ฟเวอร์ (Flask) แสดงเมื่อใช้ `novalidate` ในฟอร์ม
+
+---
+
+# Browser Acceptance B1–B8 (Lab 04)
+
+**เครื่องมือที่ใช้จริง:** **OpenCode Browser** (ภายใน OpenCode Desktop) สำหรับนำทางหน้าเว็บ อ่าน DOM, คลิก/กรอก/เลือก, และจับภาพหน้าจอ — **ไม่ใช่ Playwright MCP** ตามที่ระบุในเอกสาร Lab04 HTML ดังนั้นจึงบันทึกความจริงในเอกสารนี้
+
+**หลักการบันทึก:** หากยังไม่รันตามเคสใน browser ให้ระบุ **NOT RUN** พร้อมเหตุผล ห้ามสรุป PASS โดยไม่มีหลักฐาน
+
+| Case | Method (จริง/วางแผน) | Input (ย่อ) | Expected / Reference | Observed | Evidence | Status |
+|---|---|---|---|---|---|---|
+| B1 — Regression (Lab 3) | OpenCode Browser smoke + รัน `unittest` ครบชุด | A1–A5 ตามตารางด้านบน | ตรงเกณฑ์ A1–A5 / ไม่มี regression จากเทสต์อัตโนมัติ | `python -m unittest discover -s tests` → **Ran 45 tests OK** (2026-11-24). Browser smoke เบื้องต้นกับ Divider baseline สอดคล้องที่ยืนยันก่อนหน้า | `docs/validation.md`, `tests/*` | **PASS** (มีเทสต์อัตโนมัติครบ; ยังไม่ทำบันทึกทีละขั้น B1 ทุกกรณีแยกเป็นรายการย่อยในหน้านี้เพิ่ม) |
+| B2 — DC SPICE (CE VD) | OpenCode Browser: โหลดตัวอย่าง, ติ๊กเทียบ ngspice, analysis `dc`, Calculate/Simulate, อ่านตาราง | VCC 12V, 100k/22k/2.2k/1k, β100, VBE0.7, RL10k, Cin=Cout10µF | ngspice `.op` ใกล้ analytical (ΔIC ≤ 0.01 mA, ΔVCE ≤ 0.02 V แนวทาง Lab 3) | IC 1.229858 vs 1.229835 mA (Δ0.000023), VCE 8.052155 vs 8.052228 V (Δ0.000073) และค่า VB/VE/VC ใกล้เคียงมาก | `captures/lab06-dc-ngspice-comparison.png`, ส่วน Lab 06 ข้างล่าง | **PASS** |
+| B3 — เปลี่ยน RE แล้วรันใหม่ | ยังไม่ได้บันทึกเป็นเคสแยก | ปรับ RE (ตัวอย่าง 1k→2k) แล้ววัดแนวโน้ม IC/VCE/Gain | สอดคล้องสมการและ/หรือผลจำลอง | — | — | **NOT RUN** |
+| B4 — AC (.ac) + กราฟ | OpenCode Browser: analysis `ac`, compare, ตรวจกราฟและ caption | baseline + ค่า CE เดิม | กราฟ/ตัวเลขมาจากรันจริง (ไม่ใช่ค่าคงที่) | Gain ~1.766× (analytical) vs ~1.749× (ngspice), fL 8.55 vs 1.83 Hz, fH ~58.69 MHz, มีกราฟ Bode-like ในหน้า | `captures/lab06-ac-ngspice-comparison.png` | **PASS** (baseline) |
+| B5 — Transient (.tran) | OpenCode Browser: analysis `tran`, ตรวจกราฟ/caption | SIN 10 mV peak / 1 kHz | คลื่นจาก ngspice run จริง, p-p/gain สอดคล้อง | Vout p-p ~34.98 mV, gain ~1.749×, ~5008 samples | `captures/lab06-transient-waveform.png` | **PASS** (baseline) |
+| B6 — เปลี่ยน Source แล้วรันใหม่ | ยังไม่ได้ทำ | เปลี่ยน Vin peak / fin แล้วรันซ้ำ | ผลเปลี่ยนตามอินพุต | — | — | **NOT RUN** |
+| B7 — Invalid input / ข้อผิดพลาด engine | มีเทสต์อัตโนมัติบางส่วน (validation CE, กรณีไม่มี ngspice) ยังไม่ทำ manual browser ครบทุกกรณีใน HTML | ค่าไม่ถูกต้องหรือสภาพแวดล้อมไม่มี ngspice | ข้อความ error ชัด ไม่ทิ้งผลลัพธ์ผิดจากรอบก่อน | ผ่านชุดเทสต์ที่เกี่ยวข้องใน 45 tests | `tests/test_spice_web.py`, `tests/test_spice_engine.py` | **PARTIAL** / หลายกรณี **NOT RUN** ใน browser |
+| B8 — UI viewport Desktop/Mobile | ยังไม่จับภาพแยกขนาดหน้าจอ | Desktop + Mobile | อ่านได้ ใช้งานพื้นฐานได้ | — | — | **NOT RUN** |
+
+หมายเหตุ: การทำ B1–B8 ให้ “ครบ” ตาม Lab04 HTML ควรเพิ่มรอบทดสอบและหลักฐาน (ภาพ/บันทึก) ในคอมมิตถัดไป
 
 ---
 
