@@ -3,6 +3,8 @@
 Flask web app สำหรับคำนวณ DC Operating Point (Q-point) ของ BJT NPN แบบ Common-Emitter
 รองรับ 3 โหมดไบอัส — **Voltage Divider Bias**, **Fixed Bias** และ **Emitter Bias**
 (ENG29 2121 · Lab 02–03) พร้อมตารางผลตรวจรับ **A1–A5** แสดงอยู่ในหน้าเว็บ
+และต่อยอดเป็น Lab 06: จำลอง CE amplifier ด้วย ngspice (`.op` / `.ac` / `.tran`)
+เทียบกับสมการวิศวกรรมในหน้าเดียวกัน
 
 ## ข้อมูลส่งงาน
 
@@ -13,7 +15,9 @@ Flask web app สำหรับคำนวณ DC Operating Point (Q-point) ข
 | Commit SHA (งาน Lab 3) | `d57f6b22d82e7727e507fa2f0981576c526d26b8` |
 | เปิดเว็บ (หลังรัน Flask) | <http://127.0.0.1:5000/> |
 | ตารางตรวจรับในแอป | เมนูหน้าเว็บส่วน **04 · VALIDATION A1–A5** |
+| ตารางเทียบ ngspice | เมนูหน้าเว็บส่วน **05 · NGSPICE COMPARISON** |
 | เอกสารตรวจรับฉบับเต็ม | [`docs/validation.md`](docs/validation.md) |
+| ภาพจาก Browser จริง | [`captures/`](captures/) |
 
 > เวอร์ชัน Flask (`app.py` + `templates/`) คือชิ้นงาน Lab 3
 > ส่วน `index.html` + `static/app.js` ที่ราก repo เป็นเวอร์ชัน static เดิมของ Lab 2
@@ -40,7 +44,20 @@ flask --app app run --debug
 ```
 
 เปิด <http://127.0.0.1:5000/> — หน้าเว็บเรียงจากบนลงล่าง:
-วงจร → ฟอร์มกรอกค่า → ผลลัพธ์ → Engineering Model → ตาราง Validation A1–A5
+วงจร → ฟอร์มกรอกค่า → ผลลัพธ์ → Engineering Model → Validation A1–A5 → NGSPICE COMPARISON
+
+### ngspice (Lab 06 — ไม่บังคับสำหรับ Lab 2–3)
+
+ต้องมี ngspice 47 และใช้ไฟล์ **console** (`ngspice_con.exe`) เพราะ `ngspice.exe` เป็น GUI
+แล้ว `-b` ไม่พิมพ์ stdout ในเครื่องที่ทดสอบ
+
+```powershell
+$env:NGSPICE_EXECUTABLE = "C:\Users\B6810177\AppData\Local\Temp\opencode\ngspice47\Spice64\bin\ngspice_con.exe"
+& $env:NGSPICE_EXECUTABLE -v
+```
+
+ไม่ตั้ง env ก็ได้ — `spice_engine.find_executable()` จะหาใน `PATH` และตำแหน่งติดตั้งมาตรฐานเอง
+ถ้าไม่เจอ หน้าเว็บจะแจ้ง error แต่ผล Analytical ยังแสดงอยู่
 
 ## วิธีทดสอบ
 
@@ -48,9 +65,10 @@ flask --app app run --debug
 python -m unittest discover -s tests -v
 ```
 
-ผลปัจจุบัน: **16 tests OK** ครอบคลุมการตรวจอินพุต, ค่าอ้างอิง, region detection,
+ผลปัจจุบัน: **45 tests OK** ครอบคลุมการตรวจอินพุต, ค่าอ้างอิง, region detection,
 คำเตือน cutoff/saturation, การแปลงหน่วย kΩ ↔ Ω, HTTP flow และลำดับ layout
-(วงจร → ฟอร์ม → ผลลัพธ์)
+(วงจร → ฟอร์ม → ผลลัพธ์), netlist/parser ของ ngspice, การหา fL/fH แบบ interpolate
+และ HTTP flow ของ analysis ทั้งสามแบบ (รวมกรณีไม่มี ngspice)
 
 ## โหมดไบอัสและสมการ
 
@@ -155,6 +173,19 @@ VCE = 9.742053 − 1.036603 = 8.705450 V
   ข้อความเดียวกัน, ไม่มีบล็อก `.metrics` → ยืนยันว่า Flask ตรวจค่าเอง
   (ฟอร์มมี `novalidate` จึงไม่ได้ถูกบล็อกฝั่ง Browser)
 
+## Lab 06 — เปรียบเทียบ Analytical กับ ngspice
+
+ใช้ค่าตัวอย่าง (VCC 12 V · 100k/22k/2.2k/1k · RL 10k · Cin=Cout 10 µF · SIN 10 mV / 1 kHz)
+แล้วติ๊ก “เทียบกับ ngspice” ในฟอร์ม
+
+| Analysis | ผล Analytical | ผล ngspice | หมายเหตุ |
+|---|---|---|---|
+| `.op` | IC 1.229858 mA · VCE 8.052155 V | IC 1.229835 mA · VCE 8.052228 V | ΔIC 0.000023 mA, ΔVCE 0.000073 V |
+| `.ac` | Gain 1.766× · fL 8.55 Hz | Gain 1.749× · fL 1.83 Hz · fH 58.69 MHz | แหล่ง AC ในอุดมคติ (Rs=0) ทำให้ Cin ไม่สร้าง high-pass |
+| `.tran` | Vout(p-p) 35.323 mV · gain 1.766× | Vout(p-p) 34.981 mV · gain 1.749× | 5,008 samples, ตรงกับ gain จาก `.ac` |
+
+รายละเอียดวิธีตั้งค่า, netlist, browser log และ screenshot: [`docs/validation.md`](docs/validation.md)
+
 ## เครื่องมือตรวจและบทบาท MCP
 
 - วิธีที่ใช้จริง: **OpenCode Browser** — Browser Tool ในตัว OpenCode Desktop
@@ -173,9 +204,11 @@ VCE = 9.742053 − 1.036603 = 8.705450 V
 - `bjt_bias/bias.py` — `calculate_fixed`, `calculate_emitter` และ helper ที่ใช้ร่วมกับ Divider
 - `bjt_bias/validate.py` — `validate_fixed`, `validate_emitter` และการตรวจอินพุตร่วม
 - `app.py` — route, การเลือกฟังก์ชันตามโหมด (`_calculate`), การแปลงหน่วย kΩ → Ω
-- `templates/index.html`, `static/style.css` — ฟอร์ม 3 โหมด, วงจร SVG, ตาราง A1–A5
+- `templates/index.html`, `static/style.css` — ฟอร์ม 3 โหมด, วงจร SVG, ตาราง A1–A5,
+  analysis selector, ตารางเทียบ ngspice และกราฟ SVG
 - `bjt_bias/validation_results.py` — ข้อมูลผลตรวจที่แสดงบนเว็บ
-- `tests/` — unittest 16 เคส และ `docs/validation.md` — เอกสารตรวจรับ
+- `spice_engine.py` — netlist/run/parse สำหรับ `.op` / `.ac` / `.tran`
+- `tests/` — unittest 45 เคส และ `docs/validation.md` — เอกสารตรวจรับ (รวม Lab 06)
 
 **นักศึกษาตรวจ**
 
@@ -184,28 +217,34 @@ VCE = 9.742053 − 1.036603 = 8.705450 V
 - รัน A4 ซ้ำใน Browser: คงโหมด Emitter และ VCC 12 / RB 1000 / RC 2.2 / β 100 / VBE 0.70
   เปลี่ยนเฉพาะ RE 1 → 2 kΩ แล้วกด Calculate — ได้ IC 1.026 → 0.940 mA (ลดลงตามทำนาย)
 - ยืนยันว่า Divider ยังได้ IC 1.230 mA · VCE 8.052 V เท่า Lab 2 ก่อนแก้
+- รัน Lab 06 ซ้ำใน Browser: โหลดค่าตัวอย่าง → ติ๊กเทียบ ngspice → เปลี่ยน `dc`/`ac`/`tran`
+  แล้วดูตาราง 05 · NGSPICE COMPARISON ว่าผลสองวิธีใกล้กัน (DC ΔIC ≤ 0.01 mA)
 - ตรวจ `git diff` และ `git diff --staged` ก่อน commit ว่าไม่มี `.venv`, `.env`
   หรือ credentials ถูก stage
 
 ## โครงสร้างโปรเจกต์
 
 ```
-app.py                      Flask route, เลือกโหมด, แปลงหน่วย kΩ → Ω
+app.py                      Flask route, เลือกโหมด/analysis, แปลงหน่วย kΩ → Ω
+spice_engine.py             ngspice adapter (build_netlist/run/parse/simulate)
 bjt_bias/
   validate.py               ตรวจอินพุตแยกตามโหมด
   bias.py                   คำนวณ Q-point + ตรวจ region
   validation_results.py     ข้อมูลตาราง A1–A5 ที่แสดงบนเว็บ
 templates/
   base.html                 page shell
-  index.html                วงจร → ฟอร์ม → ผลลัพธ์ → model → validation
+  index.html                วงจร → ฟอร์ม → ผลลัพธ์ → model → validation → ngspice
 static/
-  style.css                 responsive layout + validation table
+  style.css                 responsive layout + validation/comparison table + chart
 tests/
   test_bias.py              engineering/unit tests
   test_app.py               Flask HTTP tests
+  test_spice_engine.py      netlist/parser/corner + ngspice จริง
+  test_spice_web.py         analysis selector/comparison/chart/degrade
 docs/
-  validation.md             ตารางตรวจรับฉบับเต็ม + สมการ + หลักฐาน
-  validation-artifacts/     ภาพหน้าจอหลักฐาน
+  validation.md             ตารางตรวจรับฉบับเต็ม + สมการ + หลักฐาน + Lab 06
+  validation-artifacts/     ภาพหน้าจอหลักฐาน Lab 3
+captures/                   ภาพหน้าจอ ngspice comparison จาก Browser จริง
 requirements.txt
 ```
 

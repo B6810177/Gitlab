@@ -6,11 +6,12 @@
 
 โปรแกรมสำหรับคำนวณและวิเคราะห์วงจรไฟฟ้ากระแสตรง (DC) ทั้งตัวต้านทานแบบอนุกรม ขนาน และผสม โดยรับค่าแรงดันไฟฟ้าและค่าความต้านทานเพื่อคำนวณหาความต้านทานรวม กระแสไฟฟ้า และกำลังไฟฟ้า
 
-## BJT DC Bias Web App (Lab 02–03)
+## BJT Bias &amp; CE Simulator (Lab 02–06)
 
 Flask web app สำหรับคำนวณ DC Operating Point ของวงจร BJT Common-Emitter 3 โหมด
-(Voltage-Divider Bias / Fixed Bias / Emitter Bias) — หน้าเว็บเรียงจากบนลงล่าง:
-**วงจร → ฟอร์มกรอกค่า → ผลลัพธ์ → Engineering Model → ตาราง Validation A1–A5**
+(Voltage-Divider Bias / Fixed Bias / Emitter Bias) และจำลอง CE amplifier ด้วย ngspice
+(`.op` / `.ac` / `.tran`) พร้อมตารางเทียบ Analytical vs ngspice — หน้าเว็บเรียงจากบนลงล่าง:
+**วงจร → ฟอร์มกรอกค่า → ผลลัพธ์ → Engineering Model → Validation A1–A5 → NGSPICE COMPARISON**
 
 - Repository: <https://github.com/B6810177/Gitlab>
 - วิธีติดตั้ง/รัน/ทดสอบ/ตารางตรวจรับ: [README_BJT.md](README_BJT.md)
@@ -30,6 +31,16 @@ Branch: **main** / **(root)** → Save แล้วเปิด `https://b681017
 ผลตรวจการติดตั้ง Git / OpenCode Desktop / AI Model / Python:
 [docs/lab4-environment.md](docs/lab4-environment.md)
 
+## Lab 6 — ngspice CE amplifier
+
+- ติดตั้ง ngspice 47 แล้วใช้ **console binary** (`ngspice_con.exe`) — `ngspice.exe` เป็น GUI
+  และ `-b` ไม่พิมพ์ output เมื่อรันแบบ batch
+- ตั้ง `NGSPICE_EXECUTABLE` ให้ชี้ถึง `ngspice_con.exe` (หรือปล่อยให้ `find_executable()` หาเอง)
+- กด “โหลดค่าตัวอย่าง” → ติ๊ก “เทียบกับ ngspice” → เลือก `dc` / `ac` / `tran` → กด Calculate / Simulate
+- ถ้าไม่มี ngspice แอปยังแสดงผล Analytical และขึ้น error แจ้งว่าติดตั้ง/ตั้ง path ต้องทำเพิ่ม
+- ผลเทียบจริง, browser log และ screenshot: [docs/validation.md](docs/validation.md#lab-06--ce-voltage-divider-amplifier--ngspice-comparison)
+  และ [captures/](captures/)
+
 [Superpowers workflow record](docs/superpowers/workflow-record.md) — ลำดับการทำงานตามหัวข้อ 05 และหลักฐานที่รันจริง
 
 ## โครงสร้าง Web App (หลายไฟล์)
@@ -38,6 +49,7 @@ Branch: **main** / **(root)** → Save แล้วเปิด `https://b681017
 Gitlab/
 ├── app.py                      # Flask route: รับ HTTP request, แปลงหน่วย, ส่งผลให้ template
 ├── dc_bias.py                  # public entry point → bjt_bias/bias.py (3 โหมด)
+├── spice_engine.py             # ngspice adapter: netlist → run → parse → simulate
 ├── bjt_bias/
 │   ├── bias.py                 # สมการ DC bias (VTH, RTH, IB, IC, VCE, region)
 │   ├── validate.py             # ตรวจอินพุต (comma, ช่องว่าง, ช่วงค่า)
@@ -50,12 +62,15 @@ Gitlab/
 │   └── app.js                  # ตัวคำนวณของหน้า static เดิม
 ├── tests/
 │   ├── test_dc_bias.py         # ทดสอบสมการ/validation
-│   └── test_web.py             # ทดสอบ GET/POST และ layout
+│   ├── test_web.py             # ทดสอบ GET/POST และ layout
+│   ├── test_spice_engine.py    # netlist/parser/corner + ngspice จริง
+│   └── test_spice_web.py       # analysis selector, comparison, chart, degrade
 ├── docs/
 │   ├── design-note.md          # สถาปัตยกรรม + data flow
-│   ├── validation.md           # ผลตรวจรับ A1–A5
+│   ├── validation.md           # ผลตรวจรับ A1–A5 + ngspice Lab 06
 │   ├── reflection.md           # สิ่งที่ learned จาก Lab
 │   └── lab4-environment.md     # ผลตรวจ 2.1–2.4
+├── captures/                   # screenshot จาก Browser จริง (Lab 06)
 ├── requirements.txt
 ├── AGENTS.md
 └── README.md
@@ -64,7 +79,7 @@ Gitlab/
 ## วิธีรัน (ต้องเปิดผ่าน Local Server — ห้าม double-click index.html)
 
 ```powershell
-cd "C:\Users\User\Documents\Default Project\Gitlab"
+cd "C:\Users\B6810177\Desktop\Gitlab"
 .\.venv\Scripts\python.exe -m flask --app app run --debug --port 5000
 ```
 

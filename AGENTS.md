@@ -3,13 +3,15 @@
 ## โปรเจกต์คืออะไร
 
 Flask Web Application สำหรับคำนวณ DC Operating Point ของวงจร BJT Common-Emitter
-(Voltage Divider / Fixed / Emitter Bias) — งาน Lab 02–04 ของ ENG29 2121
+(Voltage Divider / Fixed / Emitter Bias) และจำลอง CE amplifier ด้วย ngspice (`.op/.ac/.tran`)
+เทียบกับสมการวิศวกรรม — งาน Lab 02–06 ของ ENG29 2121
 
 ## Stack
 
 - Python 3.12 + Flask 3.0.3
 - Jinja2 templates + CSS (ไม่มี JavaScript framework)
 - unittest (tests/), GitHub (origin/main)
+- ngspice 47 (ใช้ `ngspice_con.exe` แบบ batch ผ่าน `spice_engine.py`)
 - Static page (`index.html` + `static/app.js`) เป็นเวอร์ชันเสริมของ Lab 2
 
 ## โครงสร้างและหน้าที่
@@ -17,6 +19,7 @@ Flask Web Application สำหรับคำนวณ DC Operating Point ข�
 ```
 app.py                    HTTP routes, form parsing, unit conversion
 dc_bias.py                public entry point → bjt_bias.bias (ตามตัวอย่าง Lab 04)
+spice_engine.py           ngspice adapter: สร้าง netlist → รัน → parse → ส่ง dict
 bjt_bias/bias.py          สมการวิศวกรรม (ไม่รู้จัก HTML/HTTP)
 bjt_bias/validate.py      ตรวจสอบอินพุต (รวม comma/ช่องว่าง)
 bjt_bias/validation_results.py  ข้อมูลตารางตรวจรับ A1–A5
@@ -24,8 +27,9 @@ templates/index.html      ฟอร์ม + ผลลัพธ์ (Jinja2)
 templates/base.html       โครงหน้าเว็บ
 static/style.css          หน้าตา/เลย์เอาต์
 static/app.js             ตัวคำนวณฝั่ง Browser (static version)
-tests/                    unittest: สมการ, validation, HTTP flow, layout
+tests/                    unittest: สมการ, validation, HTTP flow, layout, spice
 docs/                     design-note, validation, reflection, lab4
+captures/                 ภาพหน้าจอจาก Browser จริง (หลักฐานเทียบ ngspice)
 ```
 
 ## คำสั่งที่ใช้
@@ -53,3 +57,5 @@ pip install -r requirements.txt
 6. **ห้าม commit** ไฟล์ `.venv/`, `__pycache__/`, ข้อมูลลับ หรือ token
 7. Commit message ภาษาอังกฤษ ขึ้นต้นด้วย `feat:`, `fix:`, `docs:`, `test:`, `refactor:`
 8. ก่อนบอกว่างานเสร็จ ให้รันเทสต์และรายงานผลจริง (evidence before claims)
+9. `spice_engine.py` ห้าม import Flask/อ่าน request; ใช้ `ngspice_con.exe` (ไม่ใช่ GUI `ngspice.exe`) และต้อง degrade อย่างสุภาพเมื่อไม่มี binary
+10. งาน Lab 06 ต้องรัน ngspice จริง 1 รอบ + บันทึก browser log/screenshot ลง `docs/validation.md` ก่อน commit

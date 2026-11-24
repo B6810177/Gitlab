@@ -197,6 +197,21 @@
     </div>
 
     <form method="post" action="/#results" novalidate>
+        <div class="analysis-switch">
+            <label for="analysis">Analysis</label>
+            <select name="analysis" id="analysis" aria-label="เลือก analysis">
+                <option value="dc" {{ 'selected' if analysis == 'dc' else '' }}>DC Operating Point (.op)</option>
+                <option value="ac" {{ 'selected' if analysis == 'ac' else '' }}>AC Small-Signal (.ac)</option>
+                <option value="tran" {{ 'selected' if analysis == 'tran' else '' }}>Transient (.tran)</option>
+            </select>
+            <label class="check-label">
+                <input type="checkbox" name="compare" value="1" {{ 'checked' if compare else '' }}>
+                เทียบกับ ngspice
+            </label>
+            <button type="submit" name="action" value="baseline" class="btn ghost">โหลดค่าตัวอย่าง</button>
+            <p class="hint">โหลดค่าตัวอย่าง = V<sub>CC</sub> 12 V · 100k/22k/2.2k/1k · R<sub>L</sub> 10k · C<sub>in</sub>=C<sub>out</sub>=10 µF · SIN 10 mV / 1 kHz</p>
+        </div>
+
         <div class="mode-switch">
             <label for="mode">โหมดไบอัส</label>
             <select name="mode" id="mode" aria-label="เลือกโหมดไบอัส">
@@ -263,8 +278,35 @@
             </div>
         </fieldset>
 
+        <fieldset class="group ce-group">
+            <legend>วงจรขยาย CE · ใช้สำหรับ ac / tran</legend>
+            <div class="form-grid form-grid-4">
+                <label>
+                    <span>R<sub>L</sub> <em>({{ 'kΩ' if unit == 'kohm' else 'Ω' }})</em></span>
+                    <input name="RL" type="text" inputmode="decimal" autocomplete="off" value="{{ values.get('RL','') }}">
+                </label>
+                <label>
+                    <span>C<sub>in</sub> <em>(µF)</em></span>
+                    <input name="CIN" type="text" inputmode="decimal" autocomplete="off" value="{{ values.get('CIN','') }}">
+                </label>
+                <label>
+                    <span>C<sub>out</sub> <em>(µF)</em></span>
+                    <input name="COUT" type="text" inputmode="decimal" autocomplete="off" value="{{ values.get('COUT','') }}">
+                </label>
+                <label>
+                    <span>V<sub>in</sub> <em>(mV peak)</em></span>
+                    <input name="SOURCE_V" type="text" inputmode="decimal" autocomplete="off" value="{{ values.get('SOURCE_V','') }}">
+                </label>
+                <label>
+                    <span>f<sub>in</sub> <em>(Hz)</em></span>
+                    <input name="SOURCE_F" type="text" inputmode="decimal" autocomplete="off" value="{{ values.get('SOURCE_F','') }}">
+                </label>
+            </div>
+            <p class="hint">ac/tran ใช้วงจร Voltage Divider เสมอ — เลือกโหมดอื่นแล้วรัน ac/tran จะแจ้ง error</p>
+        </fieldset>
+
         <div class="form-actions">
-            <button type="submit" class="btn primary">Calculate DC Bias</button>
+            <button type="submit" class="btn primary">Calculate / Simulate</button>
             <button type="reset" class="btn ghost">Reset</button>
             <p class="hint">พิมพ์ตัวเลขได้ตามต้องการ รองรับเลขหลักเยอะและเครื่องหมาย comma เช่น 1,000,000</p>
         </div>
@@ -451,7 +493,7 @@
 
     <p class="hint">
         หน่วย: V เป็นโวลต์ (V), กระแสเป็น mA / µA, ความต้านทานเป็น Ω หรือ kΩ
-        (1 MΩ = 1,000 kΩ) — โปรแกรมนี้วิเคราะห์เฉพาะ DC ไม่รวมผลตอบสนองความถี่ (AC)
+        (1 MΩ = 1,000 kΩ) — Q-point นี้เป็นค่าอ้างอิงให้ ngspice ใช้ใน analysis แบบ dc / ac / tran ด้านล่าง
     </p>
 </section>
 
@@ -517,5 +559,85 @@
         ตารางเต็ม สมการอ้างอิง และหลักฐานอยู่ใน <code>{{ validation_doc }}</code>
     </p>
 </section>
+
+{# ---------- NGSPICE COMPARISON : LAB 06 ---------- #}
+{% if compare %}
+<section class="panel spice-panel" id="spice">
+    <div class="panel-head">
+        <div>
+            <p class="kicker">{{ '05 · NGSPICE STATUS' if spice_error else '05 · NGSPICE COMPARISON' }}</p>
+            <h2>{{ analysis_label }} · Analytical vs ngspice</h2>
+        </div>
+        {% if spice %}<span class="validation-date">ngspice-47 · SI units</span>{% endif %}
+    </div>
+
+    {% if spice_error %}
+    <div class="alert alert-error" role="alert">
+        <strong>ไม่สามารถรัน ngspice</strong>
+        <p>{{ spice_error }}</p>
+        <p class="hint">ผล Analytical ด้านบนยังเชื่อถือได้ — ติดตั้ง ngspice แล้วตั้ง <code>NGSPICE_EXECUTABLE</code> ให้ชี้ไปที่ ngspice_con.exe</p>
+    </div>
+    {% elif spice %}
+    <p class="model-lead">
+        ผลทางขวามาจาก ngspice ที่รัน netlist จริง (BJT model ปรับ IS ให้ผ่าน Q-point เดิมของสมการ Lab 2–3)
+        ผลทางซ้ายมาจากสมการวิศวกรรมใน <code>dc_bias.py</code> — ค่าสองชุดคำนวณคนละวิธี
+    </p>
+
+    <div class="table-wrap">
+        <table class="validation-table comparison-table">
+            <caption class="visually-hidden">ตารางเปรียบเทียบผลคำนวณมือกับ ngspice</caption>
+            <thead>
+                <tr>
+                    <th scope="col">ปริมาณ</th>
+                    <th scope="col">Analytical</th>
+                    <th scope="col">ngspice</th>
+                    <th scope="col">|Δ|</th>
+                    <th scope="col">หน่วย</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in comparison %}
+                <tr>
+                    <th scope="row">{{ row.metric }}</th>
+                    <td class="num">{{ '%.6f'|format(row.analytical) }}</td>
+                    <td class="num">{{ '%.6f'|format(row.ngspice) }}</td>
+                    <td class="num">{{ '%.6f'|format(row.delta) }}</td>
+                    <td>{{ row.unit }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if analysis == 'ac' and analytical_ac %}
+    <p class="hint">สมการอ้างอิง: <code>{{ analytical_ac.formula }}</code> — f<sub>L</sub> ประมาณจาก coupling capacitors (C<sub>in</sub>, C<sub>out</sub>)</p>
+    {% endif %}
+
+    {% if chart %}
+    <div class="chart-wrap">
+        {% if analysis == 'ac' %}
+        <svg id="ac-chart" class="chart" viewBox="0 0 {{ chart.width }} {{ chart.height }}" role="img" aria-label="Gain ของ ngspice เทียบความถี่">
+            <polyline points="{{ chart.series.gain_db }}" fill="none" stroke="#6d28d9" stroke-width="2.5"/>
+        </svg>
+        <p class="chart-caption">|V<sub>out</sub>/V<sub>in</sub>| (dB) เทียบ log f — midband {{ '%.3f'|format(spice.midband_gain) }}× · fL {{ '%.2f'|format(spice.f_low) }} Hz · fH {{ '%.2f'|format(spice.f_high) }} Hz</p>
+        {% else %}
+        <svg id="tran-chart" class="chart" viewBox="0 0 {{ chart.width }} {{ chart.height }}" role="img" aria-label="รูปคลื่น Vin และ Vout จาก ngspice">
+            <polyline points="{{ chart.series.vin }}" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+            <polyline points="{{ chart.series.vout }}" fill="none" stroke="#6d28d9" stroke-width="2.5"/>
+        </svg>
+        <p class="chart-caption">Vin (เทา) และ Vout (ม่วง) — {{ spice.samples }} samples · V<sub>out</sub> p-p {{ '%.2f'|format(spice.vout_pp * 1000) }} mV</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <details class="netlist">
+        <summary>Netlist ที่ส่งให้ ngspice ({{ analysis|upper }})</summary>
+        <pre>{{ netlist }}</pre>
+    </details>
+    {% else %}
+    <p class="empty">ยังไม่มีผลเปรียบเทียบ — เลือก “เทียบกับ ngspice” แล้วกด Calculate / Simulate</p>
+    {% endif %}
+</section>
+{% endif %}
 
 {% endblock %}

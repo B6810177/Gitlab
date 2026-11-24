@@ -530,6 +530,68 @@ main { padding-top: 26px; padding-bottom: 40px; }
     color: var(--navy);
 }
 
+/* ---------- Analysis selector + ngspice comparison ---------- */
+.analysis-switch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    background: #f7ecff;
+    border: 1px solid #e2d1f7;
+    border-radius: 12px;
+}
+.analysis-switch label { font-weight: 700; color: var(--navy); }
+.analysis-switch select {
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    font: inherit;
+    color: var(--navy);
+}
+.check-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+.check-label input { width: 16px; height: 16px; accent-color: var(--blue); }
+.analysis-switch .hint { flex-basis: 100%; margin: 0; }
+
+.ce-group { border-color: #e2d1f7; background: #fdfbff; }
+
+.spice-panel .comparison-table { min-width: 640px; }
+.spice-panel code {
+    background: #f7ecff;
+    border-radius: 5px;
+    padding: 1px 5px;
+    color: var(--navy);
+}
+.spice-panel .empty { color: var(--muted); font-size: 14px; }
+
+.chart-wrap {
+    margin-top: 18px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+}
+.chart { display: block; width: 100%; height: auto; }
+.chart-caption { margin: 8px 0 0; color: var(--muted); font-size: 12.5px; }
+
+.netlist { margin-top: 16px; font-size: 13px; }
+.netlist summary { cursor: pointer; font-weight: 700; color: var(--blue); }
+.netlist pre {
+    overflow-x: auto;
+    padding: 12px;
+    background: #f7f5fb;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 860px) {
     .metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }

@@ -90,3 +90,23 @@ def validate_emitter(vcc, rb, rc, re, beta, vbe):
     _check_resistors(result, ("RB", "RC", "RE"))
     _check_device(result)
     return result
+
+
+def validate_ce(rl, cin, cout, source_v, source_f):
+    """ตรวจค่าของ CE amplifier ที่ใช้ใน analysis แบบ ac/tran
+
+    ค่าที่ส่งเข้ามายังเป็นหน่วยที่ผู้ใช้กรอก (RL เป็น Ω หรือ kΩ ตาม unit,
+    C เป็น µF, แหล่งเป็น mV peak และ Hz) — การแปลงหน่วยทำที่ app.py
+    """
+    values = {
+        "RL": rl,
+        "CIN": cin,
+        "COUT": cout,
+        "SOURCE_V": source_v,
+        "SOURCE_F": source_f,
+    }
+    result = {name: _to_float(name, val) for name, val in values.items()}
+    for name, value in result.items():
+        if value <= 0:
+            raise ValueError(f"{name} must be greater than 0")
+    return result
