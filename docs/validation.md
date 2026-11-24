@@ -17,7 +17,7 @@
 
 ---
 
-| B8 - UI viewport Desktop/Mobile | OpenCode Browser: captured screenshots (desktop maxWidth 1400, mobile simulated by max-width 375px) | Desktop + Mobile (simulated) | layout readable, key elements visible | Screenshots saved: captures/lab04-b8-desktop.png, captures/lab04-b8-mobile.png | OpenCode Browser 2026-11-24 | **PASS** (mobile simulated) |
+| B8 - UI viewport Desktop/Mobile | OpenCode Browser: จับภาพหน้าจอแบบเต็มจอ (desktop) จากหน้าใช้งานจริง; ไม่ได้ทำจำลอง mobile viewport แบบย่อ เพราะภาพบีบอ่านยาก | Desktop (หลัก) / Mobile ยังไม่ตรวจ | หน้าใช้งานอ่านได้ในภาพ desktop ที่บันทึก | captures/lab04-b8-desktop.png (desktop). Mobile ยัง NOT RUN | OpenCode Browser 2026-11-24 | **PARTIAL** (มีเฉพาะ desktop screenshot) |
 
 **เครื่องมือที่ใช้จริง:** **OpenCode Browser** (ภายใน OpenCode Desktop) สำหรับนำทางหน้าเว็บ อ่าน DOM, คลิก/กรอก/เลือก, และจับภาพหน้าจอ — **ไม่ใช่ Playwright MCP** ตามที่ระบุในเอกสาร Lab04 HTML ดังนั้นจึงบันทึกความจริงในเอกสารนี้
 
