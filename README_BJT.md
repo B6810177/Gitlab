@@ -173,7 +173,7 @@ VCE = 9.742053 − 1.036603 = 8.705450 V
   ข้อความเดียวกัน, ไม่มีบล็อก `.metrics` → ยืนยันว่า Flask ตรวจค่าเอง
   (ฟอร์มมี `novalidate` จึงไม่ได้ถูกบล็อกฝั่ง Browser)
 
-## Lab 06 — เปรียบเทียบ Analytical กับ ngspice
+## Lab 04 — เปรียบเทียบ Analytical กับ ngspice
 
 ใช้ค่าตัวอย่าง (VCC 12 V · 100k/22k/2.2k/1k · RL 10k · Cin=Cout 10 µF · SIN 10 mV / 1 kHz)
 แล้วติ๊ก “เทียบกับ ngspice” ในฟอร์ม
