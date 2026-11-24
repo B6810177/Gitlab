@@ -31,7 +31,7 @@ Branch: **main** / **(root)** → Save แล้วเปิด `https://b681017
 ผลตรวจการติดตั้ง Git / OpenCode Desktop / AI Model / Python:
 [docs/lab4-environment.md](docs/lab4-environment.md)
 
-## Lab 6 — ngspice CE amplifier
+## Lab 4 — ngspice CE amplifier
 
 - ติดตั้ง ngspice 47 แล้วใช้ **console binary** (`ngspice_con.exe`) — `ngspice.exe` เป็น GUI
   และ `-b` ไม่พิมพ์ output เมื่อรันแบบ batch
