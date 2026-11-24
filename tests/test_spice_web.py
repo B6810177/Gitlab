@@ -114,6 +114,22 @@ class TestSpiceWeb(unittest.TestCase):
         self.assertNotIn("NGSPICE COMPARISON", html)
         self.assertIn("1.230", html)
 
+    def test_ac_chart_appears_without_compare(self):
+        data = {**BASE, "analysis": "ac"}
+        with patch.object(se, "run", return_value=AC_OUT):
+            html = self.client.post("/", data=data).data.decode("utf-8")
+        self.assertIn('id="ac-chart"', html)
+        self.assertIn("midband", html)
+        self.assertNotIn("comparison-table", html)
+
+    def test_tran_chart_appears_without_compare(self):
+        data = {**BASE, "analysis": "tran"}
+        with patch.object(se, "run", return_value=TRAN_OUT):
+            html = self.client.post("/", data=data).data.decode("utf-8")
+        self.assertIn('id="tran-chart"', html)
+        self.assertIn("p-p", html)
+        self.assertNotIn("comparison-table", html)
+
 
 if __name__ == "__main__":
     unittest.main()

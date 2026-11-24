@@ -281,7 +281,9 @@ def index():
                         analytical_tran = _analytical_tran(
                             result, ce, analytical_ac
                         )
-                if compare:
+                # ac/tran รัน ngspice เสมอเพื่อสร้างกราฟจากค่าที่ผู้ใช้ป้อน
+                # (compare ใช้เฉพาะตารางเปรียบเทียบ — dc ยังรันเมื่อติ๊ก compare เท่านั้น)
+                if analysis in ("ac", "tran") or compare:
                     try:
                         ic_ref = result["IC"]
                         if analysis == "dc":
@@ -293,9 +295,10 @@ def index():
                             spice = spice_engine.simulate_ac(
                                 ce, v["beta"], v["VBE"], ic_ref
                             )
-                            comparison = _comparison_rows(
-                                "ac", analytical_ac, spice
-                            )
+                            if compare:
+                                comparison = _comparison_rows(
+                                    "ac", analytical_ac, spice
+                                )
                             chart = _polyline(
                                 spice["points"], "freq", ("gain_db",), logx=True
                             )
@@ -303,9 +306,10 @@ def index():
                             spice = spice_engine.simulate_transient(
                                 ce, v["beta"], v["VBE"], ic_ref
                             )
-                            comparison = _comparison_rows(
-                                "tran", analytical_tran, spice
-                            )
+                            if compare:
+                                comparison = _comparison_rows(
+                                    "tran", analytical_tran, spice
+                                )
                             chart = _polyline(
                                 spice["points"], "time", ("vin", "vout")
                             )

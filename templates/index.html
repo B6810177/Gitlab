@@ -560,13 +560,13 @@
     </p>
 </section>
 
-{# ---------- NGSPICE COMPARISON : LAB 06 ---------- #}
-{% if compare %}
+{# ---------- NGSPICE COMPARISON / CHART : LAB 06 ---------- #}
+{% if compare or chart %}
 <section class="panel spice-panel" id="spice">
     <div class="panel-head">
         <div>
-            <p class="kicker">{{ '05 · NGSPICE STATUS' if spice_error else '05 · NGSPICE COMPARISON' }}</p>
-            <h2>{{ analysis_label }} · Analytical vs ngspice</h2>
+            <p class="kicker">{{ '05 · NGSPICE STATUS' if spice_error else ('05 · NGSPICE COMPARISON' if compare else '05 · NGSPICE PLOT') }}</p>
+            <h2>{{ analysis_label }} · {{ 'Analytical vs ngspice' if compare else 'ngspice plot' }}</h2>
         </div>
         {% if spice %}<span class="validation-date">ngspice-47 · SI units</span>{% endif %}
     </div>
@@ -578,6 +578,7 @@
         <p class="hint">ผล Analytical ด้านบนยังเชื่อถือได้ — ติดตั้ง ngspice แล้วตั้ง <code>NGSPICE_EXECUTABLE</code> ให้ชี้ไปที่ ngspice_con.exe</p>
     </div>
     {% elif spice %}
+    {% if compare %}
     <p class="model-lead">
         ผลทางขวามาจาก ngspice ที่รัน netlist จริง (BJT model ปรับ IS ให้ผ่าน Q-point เดิมของสมการ Lab 2–3)
         ผลทางซ้ายมาจากสมการวิศวกรรมใน <code>dc_bias.py</code> — ค่าสองชุดคำนวณคนละวิธี
@@ -612,6 +613,7 @@
     {% if analysis == 'ac' and analytical_ac %}
     <p class="hint">สมการอ้างอิง: <code>{{ analytical_ac.formula }}</code> — f<sub>L</sub> ประมาณจาก coupling capacitors (C<sub>in</sub>, C<sub>out</sub>)</p>
     {% endif %}
+    {% endif %}
 
     {% if chart %}
     <div class="chart-wrap">
@@ -635,7 +637,7 @@
         <pre>{{ netlist }}</pre>
     </details>
     {% else %}
-    <p class="empty">ยังไม่มีผลเปรียบเทียบ — เลือก “เทียบกับ ngspice” แล้วกด Calculate / Simulate</p>
+    <p class="empty">ยังไม่มีผล ngspice — เลือก analysis ac/tran แล้วกด Calculate / Simulate</p>
     {% endif %}
 </section>
 {% endif %}
